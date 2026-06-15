@@ -1,0 +1,99 @@
+<!--
+  UHH DIRT — DONATE
+  Same elegant/pared reading motif as the issue essay page (consistency).
+  All copy is Paul's, verbatim. Venmo link points to @paulwalkercares
+  (format venmo.com/u/<username>) — Paul to confirm it opens his profile.
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UHH DIRT — Donate</title>
+<style>
+  :root{
+    --paper:#F3F2ED; --ink:#1a1714; --red:#E8332B; --hair:#dcd9cf; --faded:#9a9485;
+    --mono:"DejaVu Sans Mono",ui-monospace,"Courier New",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype","Palatino",Georgia,"Times New Roman",serif;
+    --cond:"Arial Narrow","Helvetica Neue Condensed",Impact,system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);
+    -webkit-font-smoothing:antialiased}
+  .nav{position:fixed;top:3.4vh;right:3.4vw;z-index:60;display:flex;flex-direction:column;
+    align-items:flex-end;gap:.55rem;text-align:right}
+  .nav a{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+    text-decoration:none;font-weight:600;color:#4a4636;transition:color .15s;white-space:nowrap}
+  .nav a:hover{color:#1a1714} .nav a.cur{color:#1a1714}
+  @media (max-width:560px){ .nav a{font-size:9.5px;letter-spacing:.14em} }
+  .read{padding:18vh 6vw 0;position:relative}
+  .read .spine{position:absolute;top:18vh;left:max(2.5vw,18px);font-family:var(--mono);
+    font-size:11px;letter-spacing:.42em;color:var(--faded);font-weight:700;
+    writing-mode:vertical-rl;text-orientation:mixed}
+  .article{max-width:34rem;margin:0 auto}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--red);font-weight:700;margin-bottom:1.4rem}
+  .rule{border:none;border-top:1px solid var(--hair);margin:0 0 3rem}
+
+  .body{font-size:1.15rem;line-height:1.95;color:#2a241e}
+  .body p{margin:0 0 1.7rem}
+
+  .costs{font-family:var(--mono);font-size:.95rem;line-height:1.4;color:#2a241e;
+    margin:0 0 1.9rem;border-left:2px solid var(--hair);padding:.3rem 0 .3rem 1.2rem}
+  .costs .row{display:flex;justify-content:space-between;gap:1rem;padding:.45rem 0}
+  .costs .row span:last-child{color:var(--red)}
+  .costs .row.full{justify-content:flex-start}
+
+  .venmo{display:inline-block;margin:0 0 2.8rem;font-family:var(--mono);font-size:13px;
+    letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:var(--paper);
+    background:var(--red);padding:.95rem 1.6rem;border:2px solid var(--red);transition:.15s}
+  .venmo:hover{background:var(--paper);color:var(--red)}
+  .venmo small{display:block;letter-spacing:.06em;text-transform:none;opacity:.85;margin-top:.2rem;font-size:11px}
+
+  .foot{max-width:34rem;margin:9vh auto 0;padding:2.4rem 0 9vh;border-top:1px solid var(--hair);
+    font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--faded)}
+
+  @media (max-width:1024px){ .read .spine{display:none} }
+  @media (max-width:640px){ .read{padding:12vh 7vw 0} .body{font-size:1.08rem;line-height:1.85} }
+</style>
+
+<nav class="nav">
+  <a href="index.html#home">Home</a>
+  <a href="#">About</a>
+  <a href="#">Dig In The Dirt</a>
+  <a href="#" class="cur">Donate</a>
+</nav>
+
+<main class="read">
+  <span class="spine">UHH DIRT &nbsp;·&nbsp; DONATE</span>
+  <article class="article">
+    <div class="eyebrow">Donate</div>
+    <hr class="rule">
+
+    <a class="venmo" href="https://venmo.com/u/paulwalkercares?txn=pay&amp;note=UHH+DIRT"
+       target="_blank" rel="noopener">Donate via Venmo<small>@paulwalkercares</small></a>
+
+    <div class="body">
+      <p>Let's keep it real deal Holyfield - UHH DIRT is a flood of memory disguised as
+        consumable art. How does one put a price on the past? Beats the fuck out of me. So I won't.</p>
+
+      <p>But if you want to contribute to my hard costs, here's a basic breakdown of actual
+        non-cultivation related expenses:</p>
+
+      <div class="costs">
+        <div class="row"><span>Jar</span><span>$6</span></div>
+        <div class="row"><span>Label</span><span>$6</span></div>
+        <div class="row"><span>Hypothetical transportation</span><span>$16</span></div>
+        <div class="row"><span>Cost of the art to your door (allegedly):</span><span>$22</span></div>
+      </div>
+
+      <p>Also, low-key, I'm experienced at remembering - less so at cultivating flowers.
+        I would never ask for money for something that's a work-in-progress.</p>
+
+      <p>If one day we get to a place where I would put my own money down to buy this art,
+        at that point maybe I'll ask for yours.</p>
+
+      <p>Until then.</p>
+
+    </div>
+  </article>
+
+  <footer class="foot">[ footer / fine print &mdash; your words ]</footer>
+</main>

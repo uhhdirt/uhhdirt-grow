@@ -1,0 +1,144 @@
+<!--
+  UHH DIRT — DOOR + HOME
+  Page 1 (door): the Compaq on black. Click to enter. No nav, no sections.
+  Page 2 (home): revealed on enter. Black bg, persistent section nav (top-right),
+    a placeholder map rectangle in the middle, and issues shelved as vertical
+    book-spines (Issue 001 first; more slide in as they release).
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UHH DIRT</title>
+<style>
+  :root{
+    --void:#0c0c0d; --bone:#d8d4c8; --yellow:#F4C91B; --red:#c0202e; --ink:#1E1E1E;
+    --mono:"DejaVu Sans Mono",ui-monospace,"Courier New",monospace;
+    --cond:"Arial Narrow","Helvetica Neue Condensed",Impact,system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:var(--void);overflow:hidden}
+  body{font-family:var(--mono);color:var(--bone);-webkit-user-select:none;user-select:none}
+
+  /* ---------- DOOR ---------- */
+  #door{position:fixed;inset:0;display:grid;place-items:center;gap:3.4vh;z-index:40;
+    cursor:pointer;transition:opacity .5s, transform .5s}
+  body.entered #door{opacity:0;transform:scale(.96);pointer-events:none}
+  #stage{width:min(34vw,210px);max-width:62vw;filter:drop-shadow(7px 8px 0 #05050690);transition:transform .2s}
+  #door:hover #stage{transform:translateY(-2px)}
+  #stage svg{display:block;width:100%;height:auto}
+  #power-btn{fill:#5e7e80;transition:fill .15s}
+  #door:hover #power-btn{fill:#76aeb0}
+  body.booting #power-btn{fill:#8fe6e8;filter:drop-shadow(0 0 5px #8fe6e8)}
+  #disk-led{fill:#2a1010;transition:fill .1s} body.booting #disk-led{fill:#04954A}
+  #bay-glow{opacity:0;transition:opacity .25s} body.booting #bay-glow{opacity:.9}
+  #doorhint{font-size:11px;letter-spacing:.40em;text-transform:uppercase;color:#6a675e}
+  body.booting #doorhint{color:#8fe6e8}
+
+  /* ---------- HOME ---------- */
+  #home{position:fixed;inset:0;opacity:0;pointer-events:none;transition:opacity .6s .25s}
+  body.entered #home{opacity:1;pointer-events:auto}
+
+  .wordmark{position:fixed;top:3.6vh;left:3.4vw;z-index:55;font-family:var(--cond);font-weight:700;
+    letter-spacing:.18em;font-size:15px;color:var(--bone)}
+
+  /* persistent section nav — top-right, same on every page */
+  .nav{position:fixed;top:3.4vh;right:3.4vw;z-index:60;display:flex;flex-direction:column;
+    align-items:flex-end;gap:.6rem;text-align:right}
+  .nav a{font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;
+    text-decoration:none;font-weight:600;color:#777366;transition:color .15s;white-space:nowrap}
+  .nav a:hover{color:var(--bone)}
+  .nav a.cur{color:var(--bone)}
+
+  .map{position:fixed;top:12vh;bottom:calc(4.5vh + 256px);left:50%;transform:translateX(-50%);
+    width:min(58vw,640px);border:1.5px dashed #3a3833;
+    display:grid;place-items:center;text-align:center;
+    font-family:var(--mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#56534b}
+
+  /* issues shelved as vertical book-spines */
+  .shelf{position:fixed;left:3.4vw;bottom:4.5vh;z-index:55;display:flex;align-items:flex-end;gap:10px}
+  .shelf .label{writing-mode:vertical-rl;font-size:10px;letter-spacing:.34em;text-transform:uppercase;font-weight:700;
+    color:#cabfa6;margin-right:5px;align-self:center}
+  .book{width:48px;height:236px;background:var(--yellow);border:2px solid var(--ink);
+    writing-mode:vertical-rl;text-orientation:mixed;display:flex;align-items:center;justify-content:center;
+    font-family:var(--cond);font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:14px;
+    color:var(--red);cursor:pointer;text-decoration:none;box-shadow:4px 4px 0 #05050680;transition:transform .15s}
+  .book:hover{transform:translateY(-7px)}
+
+  .exit{position:fixed;right:3.4vw;bottom:4.5vh;z-index:55;font-family:var(--mono);font-size:11px;
+    letter-spacing:.28em;text-transform:uppercase;font-weight:600;color:#777366;cursor:pointer;background:none;border:none}
+  .exit:hover{color:var(--bone)}
+
+  @media (max-width:560px){
+    .nav a{font-size:9.5px;letter-spacing:.16em}
+    .book{height:190px;width:42px;font-size:12px}
+  }
+  @media (prefers-reduced-motion: reduce){ #door,#home,#stage{transition:opacity .2s} }
+</style>
+
+<!-- DOOR -->
+<div id="door" role="button" tabindex="0" aria-label="Click to enter UHH DIRT">
+  <div id="stage">
+    <svg viewBox="0 0 220 360" xmlns="http://www.w3.org/2000/svg">
+      <defs><radialGradient id="glowgrad" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#9fe8c0" stop-opacity=".85"/>
+        <stop offset="100%" stop-color="#9fe8c0" stop-opacity="0"/></radialGradient></defs>
+      <path d="M34,330 Q34,348 56,348 L164,348 Q186,348 186,330 L182,322 L38,322 Z" fill="#b3a88d" stroke="#1E1E1E" stroke-width="2"/>
+      <path d="M44,52 Q44,20 78,17 L150,17 Q182,21 182,58 L182,322 L38,322 L38,60 Q38,53 44,52 Z" fill="#cabfa6" stroke="#1E1E1E" stroke-width="2"/>
+      <path d="M46,56 Q46,26 78,23 L150,23" fill="none" stroke="#ddd6c2" stroke-width="2"/>
+      <rect x="52" y="46" width="116" height="92" fill="#b3a88d" stroke="#1E1E1E" stroke-width="1.5"/>
+      <ellipse id="bay-glow" cx="110" cy="92" rx="84" ry="58" fill="url(#glowgrad)"/>
+      <rect x="58" y="54" width="104" height="22" fill="#ddd6c2" stroke="#1E1E1E" stroke-width="1"/>
+      <rect x="62" y="61" width="74" height="3" fill="#b3a88d"/><rect x="150" y="60" width="8" height="5" fill="#b3a88d"/>
+      <text x="62" y="73" font-family="DejaVu Sans Mono, monospace" font-size="6" fill="#6f674f">DVD-ROM</text>
+      <rect x="58" y="82" width="104" height="20" fill="#ddd6c2" stroke="#1E1E1E" stroke-width="1"/>
+      <rect x="64" y="89" width="64" height="3" fill="#b3a88d"/><circle id="disk-led" cx="150" cy="92" r="2.6"/>
+      <text x="62" y="99" font-family="DejaVu Sans Mono, monospace" font-size="6" fill="#6f674f">zip 100</text>
+      <rect x="58" y="110" width="104" height="9" fill="#ddd6c2" stroke="#1E1E1E" stroke-width="1"/>
+      <ellipse cx="110" cy="176" rx="58" ry="26" fill="#ddd6c2" stroke="#1E1E1E" stroke-width="1.5"/>
+      <path d="M74,170 a8,8 0 1,0 5,13 a9,9 0 1,1 -5,-13 Z" fill="#6f674f"/>
+      <ellipse id="power-btn" cx="110" cy="176" rx="13" ry="10" stroke="#1E1E1E" stroke-width="1.2"/>
+      <rect x="138" y="171" width="8" height="9" rx="1" fill="none" stroke="#6f674f" stroke-width="1.2"/>
+      <circle cx="153" cy="176" r="3.4" fill="none" stroke="#6f674f" stroke-width="1.2"/>
+      <text x="110" y="236" text-anchor="middle" font-family="Arial Narrow, sans-serif" font-weight="700" font-size="17" letter-spacing="-.5" fill="#c0202e">COMPAQ</text>
+      <text x="110" y="250" text-anchor="middle" font-family="Arial Narrow, sans-serif" font-weight="700" font-size="9" letter-spacing="2" fill="#8a8174">PRESARIO</text>
+      <rect x="92" y="266" width="36" height="13" rx="6.5" fill="none" stroke="#9a917a" stroke-width="1"/>
+      <text x="110" y="275" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="8" fill="#7f7660">5284</text>
+    </svg>
+  </div>
+  <div id="doorhint">Click to enter UHH DIRT</div>
+</div>
+
+<!-- HOME -->
+<div id="home">
+  <div class="wordmark">UHH DIRT</div>
+  <nav class="nav">
+    <a href="#home" class="cur">Home</a>
+    <a href="#">About</a>
+    <a href="#">Dig In The Dirt</a>
+    <a href="donate.html">Donate</a>
+  </nav>
+
+  <div class="map">[ West Windsoropolis &mdash; map goes here ]</div>
+
+  <div class="shelf">
+    <span class="label">Releases</span>
+    <a class="book" href="issues/001-he-no-here.html">Issue 001 &mdash; He No Here</a>
+  </div>
+
+  <button class="exit" id="exit">&#8592; power down</button>
+</div>
+
+<script>
+(() => {
+  const body=document.body, door=document.getElementById('door'), exit=document.getElementById('exit');
+  let entering=false;
+  function go(){ if(entering||body.classList.contains('entered'))return; entering=true;
+    body.classList.add('booting');
+    setTimeout(()=>{ body.classList.add('entered'); body.classList.remove('booting'); entering=false; },750); }
+  function leave(){ body.classList.remove('entered'); }
+  if(location.hash==='#home'){ body.classList.add('entered'); }
+  door.addEventListener('click',go);
+  door.addEventListener('keydown',e=>{ if(e.code==='Enter'||e.code==='Space'){ e.preventDefault(); go(); }});
+  exit.addEventListener('click',leave);
+  addEventListener('keydown',e=>{ if(e.code==='Escape') leave(); });
+})();
+</script>
