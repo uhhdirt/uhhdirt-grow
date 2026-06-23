@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { supabase, GROW_ID } from './supabaseClient.js';
 import { Sprout, Calendar, Activity, BookOpen, CheckCircle2, Circle, Upload, ChevronRight, AlertCircle, TrendingUp, Camera, X, Info, Thermometer, Droplets, Wind } from 'lucide-react';
 
 // ============================================
@@ -441,7 +442,7 @@ function Progress({ currentIdx, totalCount, phaseColors }) {
   );
 }
 
-function TaskList({ week, completed, onToggle, wateringNote }) {
+function TaskList({ week, completed, onToggle, wateringNote, canEdit }) {
   const sections = [
     { key: 'feed', label: 'Feed', icon: '🥄', color: 'text-red bg-panel border-hair' },
     { key: 'action', label: 'Actions', icon: '🛠', color: 'text-ink bg-panel border-purple-200' },
@@ -477,13 +478,15 @@ function TaskList({ week, completed, onToggle, wateringNote }) {
                     {isActionable ? (
                       <button
                         onClick={() => onToggle(taskId)}
-                        className="mt-0.5 flex-shrink-0 transition-transform hover:scale-110"
+                        disabled={!canEdit}
+                        className={`mt-0.5 flex-shrink-0 w-[22px] h-[22px] border-2 border-void flex items-center justify-center transition-colors ${isDone ? 'bg-mag' : 'bg-white'} ${canEdit ? 'cursor-pointer hover:border-mag' : 'cursor-default'}`}
+                        style={{ boxShadow: '2px 2px 0 #000' }}
                         aria-label={isDone ? 'Mark incomplete' : 'Mark complete'}
                       >
-                        {isDone ? <CheckCircle2 size={18} className="text-red" /> : <Circle size={18} className="text-faded" />}
+                        {isDone && <span className="text-white font-bold text-sm leading-none">✓</span>}
                       </button>
                     ) : (
-                      <span className="mt-0.5 flex-shrink-0 text-red">•</span>
+                      <span className="mt-0.5 flex-shrink-0 text-mag font-bold">›</span>
                     )}
                     <span className={`leading-relaxed ${isDone ? 'line-through text-faded' : 'text-ink'}`}>{task}</span>
                   </li>
@@ -723,7 +726,7 @@ function ChangesThisWeek({ week, latestEnv, completedTasks }) {
   );
 }
 
-function Dashboard({ state, setState }) {
+function Dashboard({ state, setState, canEdit }) {
   const currentIdx = SOP.weeks.findIndex(w => w.id === state.currentWeekId);
   const currentWeek = SOP.weeks[currentIdx];
   const nextWeek = SOP.weeks[currentIdx + 1];
@@ -738,6 +741,7 @@ function Dashboard({ state, setState }) {
   };
 
   const toggleTask = (taskId) => {
+    if (!canEdit) return;
     setState(prev => ({
       ...prev,
       completedTasks: { ...prev.completedTasks, [taskId]: !prev.completedTasks[taskId] }
@@ -831,7 +835,7 @@ function Dashboard({ state, setState }) {
         </div>
 
         {/* Tasks */}
-        <TaskList week={currentWeek} completed={state.completedTasks} onToggle={toggleTask} wateringNote={SOP.grow.wateringNote} />
+        <TaskList week={currentWeek} completed={state.completedTasks} onToggle={toggleTask} wateringNote={SOP.grow.wateringNote} canEdit={canEdit} />
       </Card>
 
       {/* Next up + Latest env */}
@@ -1556,78 +1560,235 @@ function History() {
 // =============================================================
 // MAIN APP
 // =============================================================
+function LoginModal({ onClose }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [err, setErr] = useState('');
+  const [busy, setBusy] = useState(false);
+
+  const submit = async () => {
+    setBusy(true); setErr('');
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    setBusy(false);
+    if (error) setErr(error.message);
+    else onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-ink/40 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="bg-paper border-2 border-ink max-w-sm w-full p-5" onClick={e => e.stopPropagation()}>
+        <h3 className="font-cond font-bold uppercase tracking-wide text-lg mb-3 pb-2 border-b border-ink">Sign in to edit</h3>
+        <input
+          type="email" placeholder="email" value={email}
+          onChange={e => setEmail(e.target.value)}
+          className="w-full mb-2 px-3 py-2 border border-hair bg-paper text-ink text-sm font-serif"
+        />
+        <input
+          type="password" placeholder="password" value={password}
+          onChange={e => setPassword(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && submit()}
+          className="w-full mb-3 px-3 py-2 border border-hair bg-paper text-ink text-sm font-serif"
+        />
+        {err && <p className="text-red text-xs mb-2">{err}</p>}
+        <div className="flex gap-2">
+          <button onClick={submit} disabled={busy} className="flex-1 bg-ink text-paper font-cond uppercase tracking-wider text-xs py-2.5">
+            {busy ? '…' : 'Sign in'}
+          </button>
+          <button onClick={onClose} className="px-4 border border-ink font-cond uppercase tracking-wider text-xs">Cancel</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =============================================================
+function DellisSplash() {
+  return (
+    <div className="fixed inset-0 z-[100] bg-void flex flex-col items-center justify-center overflow-hidden">
+      <div className="relative w-full max-w-[420px] px-6 flex flex-col items-center">
+        <div className="relative w-full">
+          <img
+            src="dellis.jpg"
+            alt="DJ Dellis — Dave Ellis"
+            className="w-full block animate-[fadein_0.6s_ease-out]"
+            style={{ boxShadow: 'inset 0 0 120px 40px #000' }}
+          />
+          <div className="absolute inset-0" style={{ boxShadow: 'inset 0 0 100px 30px #0a0a14' }} />
+        </div>
+        <div className="mt-5 text-center">
+          <div className="font-cond font-bold uppercase tracking-[0.04em] text-2xl text-yellow leading-none">
+            Pomelo Punch
+          </div>
+          <div className="font-cond uppercase tracking-[0.25em] text-[10px] text-faded mt-2">
+            A UHH DIRT Grow Log
+          </div>
+        </div>
+      </div>
+      <style>{`@keyframes fadein{from{opacity:0}to{opacity:1}}`}</style>
+    </div>
+  );
+}
+
+// =============================================================
 export default function GrowTracker() {
   const [view, setView] = useState('dashboard');
   const [state, setState] = useState(defaultState);
   const [loaded, setLoaded] = useState(false);
+  const [session, setSession] = useState(null);      // null = public/read-only; set = editor
+  const [saving, setSaving] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [splash, setSplash] = useState(true);
 
-  // Load on mount
+  const canEdit = !!session;
+
+  // Splash on every open, ~1.6s
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setState(JSON.parse(raw));
-    } catch (err) { /* no data yet */ }
-    setLoaded(true);
+    const t = setTimeout(() => setSplash(false), 1600);
+    return () => clearTimeout(t);
   }, []);
 
-  // Save on change
+  // Load grow state from Supabase + watch auth
   useEffect(() => {
-    if (!loaded) return;
+    let active = true;
+    (async () => {
+      try {
+        const { data } = await supabase
+          .from('grow_state')
+          .select('state')
+          .eq('id', GROW_ID)
+          .maybeSingle();
+        if (active && data && data.state) setState(data.state);
+      } catch (err) {
+        console.error('Load failed:', err);
+      }
+      if (active) setLoaded(true);
+    })();
+
+    supabase.auth.getSession().then(({ data }) => {
+      if (active) setSession(data.session);
+    });
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
+      setSession(s);
+    });
+    return () => { active = false; sub.subscription.unsubscribe(); };
+  }, []);
+
+  // Persist to Supabase — ONLY when signed in. Writes are also blocked
+  // server-side by Row Level Security, so this is enforced, not just hidden.
+  const persist = async (nextState) => {
+    if (!canEdit) return;
+    setSaving(true);
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      const { error } = await supabase
+        .from('grow_state')
+        .upsert({ id: GROW_ID, state: nextState, updated_at: new Date().toISOString() });
+      if (error) console.error('Save failed:', error);
     } catch (err) {
-      console.error('Storage failed:', err);
+      console.error('Save failed:', err);
     }
-  }, [state, loaded]);
+    setSaving(false);
+  };
+
+  // Wrap setState so every editor change also pushes to the cloud.
+  const updateState = (updater) => {
+    setState(prev => {
+      const next = typeof updater === 'function' ? updater(prev) : updater;
+      persist(next);
+      return next;
+    });
+  };
+
+  if (splash) {
+    return <DellisSplash />;
+  }
 
   if (!loaded) {
     return (
-      <div className="min-h-screen bg-paper flex items-center justify-center">
-        <div className="text-faded">Loading your grow...</div>
+      <div className="min-h-screen bg-void flex items-center justify-center">
+        <div className="font-cond uppercase tracking-[0.2em] text-yellow text-sm animate-pulse">Loading the grow…</div>
       </div>
     );
   }
 
   const tabs = [
-    { id: 'dashboard', label: 'Today', icon: <Sprout size={16} /> },
-    { id: 'schedule', label: 'Schedule', icon: <Calendar size={16} /> },
-    { id: 'environment', label: 'Env', icon: <Activity size={16} /> },
-    { id: 'journal', label: 'Journal', icon: <BookOpen size={16} /> },
-    { id: 'history', label: 'History', icon: <TrendingUp size={16} /> },
-    { id: 'settings', label: '⚙', icon: <Info size={16} /> },
+    { id: 'dashboard', label: 'Today' },
+    { id: 'schedule', label: 'Schedule' },
+    { id: 'environment', label: 'Env' },
+    { id: 'journal', label: 'Journal' },
+    { id: 'history', label: 'History' },
+    { id: 'settings', label: 'Set' },
   ];
 
   return (
-    <div className="min-h-screen bg-paper font-serif text-ink">
-      <div className="max-w-3xl mx-auto p-4 pb-24">
-        {/* Header */}
-        <div className="mb-5 pb-3 border-b-2 border-ink flex items-end justify-between">
-          <h1 className="font-cond font-bold uppercase tracking-wide text-2xl text-ink leading-none">
-            UHH DIRT <span className="text-red">//</span> GROW
-          </h1>
-          <p className="font-cond text-[10px] uppercase tracking-[0.18em] text-faded">Pomelo Punch · v1</p>
+    <div className="min-h-screen bg-cream font-serif text-ink">
+      <div className="max-w-3xl mx-auto pb-24">
+        {/* Riot masthead */}
+        <div className="relative overflow-hidden border-b-4 border-void px-5 pt-5 pb-6"
+             style={{ background: 'linear-gradient(135deg,#1a8fff 0%,#0b67c2 60%,#063e7a 100%)' }}>
+          <div className="absolute inset-0 pointer-events-none"
+               style={{ background: 'repeating-linear-gradient(115deg,transparent 0 22px,rgba(255,255,255,.06) 22px 44px)' }} />
+          <div className="relative flex items-start justify-between">
+            <div>
+              <span className="inline-block bg-mag text-white font-cond font-bold text-[10px] tracking-[0.18em] uppercase px-2 py-0.5 border-2 border-void mb-2"
+                    style={{ transform: 'skewX(-7deg)' }}>
+                Pimp Palace West
+              </span>
+              <h1 className="font-cond font-bold uppercase text-4xl leading-[0.88] text-yellow"
+                  style={{ transform: 'skewX(-7deg)', textShadow: '3px 3px 0 #000, 5px 5px 0 #ff2e85' }}>
+                UHH DIRT<br/>Grow
+              </h1>
+            </div>
+            <div className="relative z-[2] text-right">
+              {canEdit ? (
+                <button onClick={() => supabase.auth.signOut()}
+                        className="bg-yellow text-void font-cond font-bold text-[10px] uppercase px-2 py-1 border-2 border-void"
+                        style={{ transform: 'rotate(4deg)', boxShadow: '2px 2px 0 #000' }}>
+                  {saving ? 'saving…' : 'editing · out'}
+                </button>
+              ) : (
+                <button onClick={() => setShowLogin(true)}
+                        className="bg-cream text-void font-cond font-bold text-[10px] uppercase px-2 py-1 border-2 border-void"
+                        style={{ transform: 'rotate(4deg)', boxShadow: '2px 2px 0 #000' }}>
+                  sign in
+                </button>
+              )}
+            </div>
+          </div>
         </div>
 
-        {/* Content */}
-        {view === 'dashboard' && <Dashboard state={state} setState={setState} />}
-        {view === 'schedule' && <Schedule state={state} setState={setState} />}
-        {view === 'environment' && <Environment state={state} setState={setState} />}
-        {view === 'journal' && <Journal state={state} setState={setState} />}
-        {view === 'history' && <History />}
-        {view === 'settings' && <Settings state={state} setState={setState} />}
+        {!canEdit && (
+          <div className="bg-void text-faded font-cond uppercase tracking-wider text-[10px] px-5 py-1.5 text-center">
+            Viewing Paul's grow log — read only
+          </div>
+        )}
+
+        {showLogin && !canEdit && (
+          <LoginModal onClose={() => setShowLogin(false)} />
+        )}
+
+        <div className="px-4 pt-4">
+          {/* Content */}
+          {view === 'dashboard' && <Dashboard state={state} setState={updateState} canEdit={canEdit} />}
+          {view === 'schedule' && <Schedule state={state} setState={updateState} canEdit={canEdit} />}
+          {view === 'environment' && <Environment state={state} setState={updateState} canEdit={canEdit} />}
+          {view === 'journal' && <Journal state={state} setState={updateState} canEdit={canEdit} />}
+          {view === 'history' && <History />}
+          {view === 'settings' && <Settings state={state} setState={updateState} canEdit={canEdit} />}
+        </div>
       </div>
 
-      {/* Bottom nav (mobile-first) */}
-      <div className="fixed bottom-0 left-0 right-0 bg-paper border-t-2 border-ink">
-        <div className="max-w-3xl mx-auto px-2">
+      {/* Bottom nav */}
+      <div className="fixed bottom-0 left-0 right-0 bg-void border-t-4 border-void">
+        <div className="max-w-3xl mx-auto px-1">
           <div className="flex justify-between">
             {tabs.map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setView(tab.id)}
-                className={`flex-1 flex flex-col items-center gap-1 py-3 font-cond uppercase tracking-wider text-[11px] transition-colors border-b-[3px] ${view === tab.id ? 'text-ink font-bold border-red' : 'text-faded border-transparent hover:text-ink'}`}
+                className={`flex-1 flex flex-col items-center py-3 font-cond font-bold uppercase tracking-wider text-[11px] transition-colors ${view === tab.id ? 'text-yellow' : 'text-faded hover:text-cream'}`}
               >
-                {tab.icon}
+                {view === tab.id && <span className="block w-4 h-[3px] bg-mag mb-1.5" />}
+                {view !== tab.id && <span className="block w-4 h-[3px] bg-transparent mb-1.5" />}
                 <span>{tab.label}</span>
               </button>
             ))}
