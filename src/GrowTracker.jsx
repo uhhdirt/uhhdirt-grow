@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { supabase, GROW_ID } from './supabaseClient.js';
+import { supabase, GROW_ID, isCloud } from './supabaseClient.js';
 import { Sprout, Calendar, Activity, BookOpen, CheckCircle2, Circle, Upload, ChevronRight, AlertCircle, TrendingUp, Camera, X, Info, Thermometer, Droplets, Wind } from 'lucide-react';
 
 // ============================================
@@ -1639,7 +1639,10 @@ export default function GrowTracker() {
   const [showLogin, setShowLogin] = useState(false);
   const [splash, setSplash] = useState(true);
 
-  const canEdit = !!session;
+  // In LOCAL mode (Supabase not configured yet) editing is open on this device.
+  // In CLOUD mode, only a signed-in session can edit.
+  const canEdit = isCloud ? !!session : true;
+  const LS_KEY = 'uhhdirt-grow:' + GROW_ID;
 
   // Splash on every open, ~1.6s
   useEffect(() => {
@@ -1647,46 +1650,59 @@ export default function GrowTracker() {
     return () => clearTimeout(t);
   }, []);
 
-  // Load grow state from Supabase + watch auth
+  // Load grow state (cloud if configured, else localStorage) + watch auth
   useEffect(() => {
     let active = true;
     (async () => {
-      try {
-        const { data } = await supabase
-          .from('grow_state')
-          .select('state')
-          .eq('id', GROW_ID)
-          .maybeSingle();
-        if (active && data && data.state) setState(data.state);
-      } catch (err) {
-        console.error('Load failed:', err);
+      if (isCloud) {
+        try {
+          const { data } = await supabase
+            .from('grow_state')
+            .select('state')
+            .eq('id', GROW_ID)
+            .maybeSingle();
+          if (active && data && data.state) setState(data.state);
+        } catch (err) {
+          console.error('Load failed:', err);
+        }
+      } else {
+        try {
+          const raw = localStorage.getItem(LS_KEY);
+          if (active && raw) setState(JSON.parse(raw));
+        } catch (err) { /* no local data yet */ }
       }
       if (active) setLoaded(true);
     })();
 
-    supabase.auth.getSession().then(({ data }) => {
-      if (active) setSession(data.session);
-    });
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
-      setSession(s);
-    });
-    return () => { active = false; sub.subscription.unsubscribe(); };
+    if (isCloud) {
+      supabase.auth.getSession().then(({ data }) => {
+        if (active) setSession(data.session);
+      });
+      const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
+        setSession(s);
+      });
+      return () => { active = false; sub.subscription.unsubscribe(); };
+    }
+    return () => { active = false; };
   }, []);
 
-  // Persist to Supabase — ONLY when signed in. Writes are also blocked
-  // server-side by Row Level Security, so this is enforced, not just hidden.
+  // Persist — cloud when configured + signed in, else localStorage.
   const persist = async (nextState) => {
     if (!canEdit) return;
-    setSaving(true);
-    try {
-      const { error } = await supabase
-        .from('grow_state')
-        .upsert({ id: GROW_ID, state: nextState, updated_at: new Date().toISOString() });
-      if (error) console.error('Save failed:', error);
-    } catch (err) {
-      console.error('Save failed:', err);
+    if (isCloud) {
+      setSaving(true);
+      try {
+        const { error } = await supabase
+          .from('grow_state')
+          .upsert({ id: GROW_ID, state: nextState, updated_at: new Date().toISOString() });
+        if (error) console.error('Save failed:', error);
+      } catch (err) {
+        console.error('Save failed:', err);
+      }
+      setSaving(false);
+    } else {
+      try { localStorage.setItem(LS_KEY, JSON.stringify(nextState)); } catch (err) { /* ignore */ }
     }
-    setSaving(false);
   };
 
   // Wrap setState so every editor change also pushes to the cloud.
@@ -1739,7 +1755,12 @@ export default function GrowTracker() {
               </h1>
             </div>
             <div className="relative z-[2] text-right">
-              {canEdit ? (
+              {!isCloud ? (
+                <span className="bg-yellow text-void font-cond font-bold text-[10px] uppercase px-2 py-1 border-2 border-void inline-block"
+                      style={{ transform: 'rotate(4deg)', boxShadow: '2px 2px 0 #000' }}>
+                  local
+                </span>
+              ) : canEdit ? (
                 <button onClick={() => supabase.auth.signOut()}
                         className="bg-yellow text-void font-cond font-bold text-[10px] uppercase px-2 py-1 border-2 border-void"
                         style={{ transform: 'rotate(4deg)', boxShadow: '2px 2px 0 #000' }}>
@@ -1756,13 +1777,13 @@ export default function GrowTracker() {
           </div>
         </div>
 
-        {!canEdit && (
+        {isCloud && !canEdit && (
           <div className="bg-void text-faded font-cond uppercase tracking-wider text-[10px] px-5 py-1.5 text-center">
             Viewing Paul's grow log — read only
           </div>
         )}
 
-        {showLogin && !canEdit && (
+        {showLogin && isCloud && !canEdit && (
           <LoginModal onClose={() => setShowLogin(false)} />
         )}
 
