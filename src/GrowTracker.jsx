@@ -727,7 +727,8 @@ function ChangesThisWeek({ week, latestEnv, completedTasks }) {
 }
 
 function Dashboard({ state, setState, canEdit }) {
-  const currentIdx = SOP.weeks.findIndex(w => w.id === state.currentWeekId);
+  const rawIdx = SOP.weeks.findIndex(w => w.id === state.currentWeekId);
+  const currentIdx = rawIdx === -1 ? 0 : rawIdx;
   const currentWeek = SOP.weeks[currentIdx];
   const nextWeek = SOP.weeks[currentIdx + 1];
 
@@ -1006,7 +1007,7 @@ function Environment({ state, setState }) {
     setParseError('');
   };
 
-  const currentWeek = SOP.weeks.find(w => w.id === state.currentWeekId);
+  const currentWeek = SOP.weeks.find(w => w.id === state.currentWeekId) || SOP.weeks[0];
 
   // Compute status against targets
   const evaluateAgainstTarget = (value, targetRange) => {
@@ -1661,7 +1662,10 @@ export default function GrowTracker() {
             .select('state')
             .eq('id', GROW_ID)
             .maybeSingle();
-          if (active && data && data.state) setState(data.state);
+          // Merge with defaults so an empty/partial row can't break the UI
+          if (active && data && data.state && Object.keys(data.state).length > 0) {
+            setState({ ...defaultState, ...data.state });
+          }
         } catch (err) {
           console.error('Load failed:', err);
         }
