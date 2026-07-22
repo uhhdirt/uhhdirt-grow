@@ -43,7 +43,7 @@ const SOP = {
       tempOn: '75-80', rhOn: '60-65', vpdOn: '0.8-1.0', tempOff: '68-72', rhOff: '65-70', vpdOff: '0.6-0.8',
       light: '30-50% · PAR 200-300', lightHeight: '30"+',
       tasks: {
-        feed: ['Plain water + Quillaja ¼ tsp/gal'],
+        feed: ['Plain water + Quillaja ¼ tsp/gal', 'Aloe Vera Powder ½ tsp/gal (Jay Plantspeaker)'],
         action: ['Transplant clones', 'Dust Microbe+ or Microbe Complete on root ball', '🦟 WDG3000 drench (label rate) — patio soil = high gnat risk', '🦟 Mosquito Bits on surface under mulch'],
         environment: ['AC running for comfort', 'Verify exhaust fan working'],
         watchFor: ['💧 DAILY: Check soil moisture by feel (1-2" deep) — water with Quillaja if approaching dry', 'New growth at top within 5-7 days', 'Roots establishing — slight droop normal first 24hr'],
@@ -55,7 +55,7 @@ const SOP = {
       tempOn: '75-80', rhOn: '60-65', vpdOn: '0.8-1.0', tempOff: '68-72', rhOff: '65-70', vpdOff: '0.6-0.8',
       light: '50% · PAR 400-500', lightHeight: '24"',
       tasks: {
-        feed: ['Big 6 Microbes ½ tsp/gal', 'Coconut Powder ¼ tsp/gal', 'Quillaja ¼ tsp/gal'],
+        feed: ['Big 6 Microbes ½ tsp/gal', 'Coconut Powder ¼ tsp/gal', 'Quillaja ¼ tsp/gal', 'Aloe Vera Powder ½ tsp/gal (Jay Plantspeaker)'],
         action: ['Light feed — biology still establishing', '🦟 WDG3000 drench (every 7-10 days)'],
         environment: ['Bump light dim % gradually'],
         watchFor: ['💧 DAILY: Check soil moisture by feel (1-2" deep) — water with Quillaja if approaching dry', 'First true leaves expanding', 'Healthy green color'],
@@ -67,7 +67,7 @@ const SOP = {
       tempOn: '76-80', rhOn: '60-65', vpdOn: '0.9-1.1', tempOff: '68-72', rhOff: '62-68', vpdOff: '0.7-0.9',
       light: '60% · PAR 500-600', lightHeight: '20-24"',
       tasks: {
-        feed: ['BuildAVeg ½ tsp/gal', 'Big 6 Microbes ½ tsp/gal', 'Coconut Powder ½ tsp/gal', 'N Humate 30ml/gal (Bokashi)', 'Quillaja ¼ tsp/gal'],
+        feed: ['BuildAVeg ½ tsp/gal', 'Big 6 Microbes ½ tsp/gal', 'Coconut Powder ½ tsp/gal', 'N Humate 30ml/gal (Bokashi)', 'Quillaja ¼ tsp/gal', 'Aloe Vera Powder ½ tsp/gal (Jay Plantspeaker)'],
         action: ['🔪 FIRST TOP at 5th-6th node', 'Begin LST as branches reach 4-5"', '🦟 WDG3000 drench (every 7-10 days)', '🦟 Refresh Mosquito Bits if thin'],
         environment: ['Light to 60%', 'Light height 20-24"'],
         watchFor: ['💧 DAILY: Check soil moisture by feel (1-2" deep) — water with Quillaja if approaching dry', 'Recovery from topping in 3-5 days', 'Side branches starting to fill out'],
@@ -79,7 +79,7 @@ const SOP = {
       tempOn: '78-80', rhOn: '58-62', vpdOn: '1.0-1.2', tempOff: '68-72', rhOff: '60-65', vpdOff: '0.8-1.0',
       light: '70% · PAR 600-700', lightHeight: '20"',
       tasks: {
-        feed: ['BuildAVeg ½ tsp/gal', 'Coconut Powder ½ tsp/gal', 'Quillaja ¼ tsp/gal'],
+        feed: ['BuildAVeg ½ tsp/gal', 'Coconut Powder ½ tsp/gal', 'Quillaja ¼ tsp/gal', 'Aloe Vera Powder ½ tsp/gal (Jay Plantspeaker)'],
         action: ['🔪 SECOND TOP — top each of the 2 main stems at their 3rd node (→ 4 main colas)', '🍽 TOP-DRESS: ¼ cup Craft Blend + handful castings per plant under mulch', '🕸 Install SCROG net 10-12" above bed', '🦟 WDG3000 drench (every 7-10 days)'],
         environment: ['Light to 70%'],
         watchFor: ['💧 DAILY: Check soil moisture by feel (1-2" deep) — water with Quillaja if approaching dry', 'Canopy filling the scrog 50-70%', 'Multiple bud sites forming below net'],
@@ -91,7 +91,7 @@ const SOP = {
       tempOn: '78-80', rhOn: '58-62', vpdOn: '1.0-1.2', tempOff: '68-72', rhOff: '58-62', vpdOff: '0.9-1.1',
       light: '70-80% · PAR 700-800', lightHeight: '18-20"',
       tasks: {
-        feed: ['BuildAVeg ¼ tsp/gal', 'BuildABloom ⅛ tsp/gal', 'Big 6 Microbes ½ tsp/gal', 'Coconut Powder ½ tsp/gal', 'Complex Humate 30ml/gal (Bokashi)', 'Quillaja ¼ tsp/gal'],
+        feed: ['BuildAVeg ¼ tsp/gal', 'BuildABloom ⅛ tsp/gal', 'Big 6 Microbes ½ tsp/gal', 'Coconut Powder ½ tsp/gal', 'Complex Humate 30ml/gal (Bokashi)', 'Quillaja ¼ tsp/gal', 'Aloe Vera Powder ½ tsp/gal (Jay Plantspeaker)'],
         action: ['✂️ Light defoliation', '🍭 Lollipop bottom third', 'Final LST adjustments', '🦟 WDG3000 drench (every 7-10 days)', '🦟 Refresh Mosquito Bits'],
         environment: ['Drop RH toward 55%'],
         watchFor: ['💧 DAILY: Check soil moisture by feel (1-2" deep) — water with Quillaja if approaching dry', 'Scrog 70-80% full', 'Plants ready to stretch'],
@@ -103,7 +103,7 @@ const SOP = {
       tempOn: '78-80', rhOn: '55-60', vpdOn: '1.0-1.2', tempOff: '68-70', rhOff: '50-55', vpdOff: '1.0-1.2',
       light: '80% · PAR 800-900', lightHeight: '18"',
       tasks: {
-        feed: ['BuildABloom ¼ tsp/gal', 'Big 6 Microbes ½ tsp/gal', 'Bio Phos 3ml/gal', 'Molasses 1-2 ml/gal', 'Quillaja ¼ tsp/gal'],
+        feed: ['BuildABloom ¼ tsp/gal', 'Big 6 Microbes ½ tsp/gal', 'Bio Phos 3ml/gal', 'Molasses 1-2 ml/gal', 'Quillaja ¼ tsp/gal', 'Aloe Vera Powder ½ tsp/gal (Jay Plantspeaker)'],
         action: ['🌸 SWITCH LIGHT SCHEDULE to 12/12', '🍽 TOP-DRESS: ¼ cup BuildAFlower + ½" castings per plant', '🦟 WDG3000 drench (last regular gnat treatment)'],
         environment: ['Confirm light schedule changed'],
         watchFor: ['💧 DAILY: Check soil moisture by feel (1-2" deep) — water with Quillaja if approaching dry', 'Stretch begins within 5-7 days'],
@@ -115,7 +115,7 @@ const SOP = {
       tempOn: '78-80', rhOn: '55-60', vpdOn: '1.0-1.2', tempOff: '68-70', rhOff: '50-55', vpdOff: '1.0-1.2',
       light: '80% · PAR 800-900', lightHeight: '18"',
       tasks: {
-        feed: ['BuildABloom ¼ tsp/gal', 'Big 6 Microbes ½ tsp/gal', 'Bio Phos 3ml/gal', 'Molasses 1-2 ml/gal', 'Quillaja ¼ tsp/gal'],
+        feed: ['BuildABloom ¼ tsp/gal', 'Big 6 Microbes ½ tsp/gal', 'Bio Phos 3ml/gal', 'Molasses 1-2 ml/gal', 'Quillaja ¼ tsp/gal', 'Aloe Vera Powder ½ tsp/gal (Jay Plantspeaker)'],
         action: ['🦟 WDG3000 drench (label rate) — gnat larvae', '🦟 Refresh Mosquito Bits on surface'],
         environment: ['Watch for plants doubling in height'],
         watchFor: ['💧 DAILY: Check soil moisture by feel (1-2" deep) — water with Quillaja if approaching dry', 'Pre-flowers showing', 'Rapid vertical growth'],
@@ -127,7 +127,7 @@ const SOP = {
       tempOn: '78-80', rhOn: '55-60', vpdOn: '1.0-1.2', tempOff: '68-70', rhOff: '50-55', vpdOff: '1.0-1.2',
       light: '80-85% · PAR 800-900', lightHeight: '18"',
       tasks: {
-        feed: ['BuildABloom ¼ tsp/gal', 'Big 6 Microbes ½ tsp/gal', 'Bio Phos 3ml/gal', 'CalSil+ per label (Bokashi) — STARTS here', 'Molasses 1-2 ml/gal', 'Quillaja ¼ tsp/gal'],
+        feed: ['BuildABloom ¼ tsp/gal', 'Big 6 Microbes ½ tsp/gal', 'Bio Phos 3ml/gal', 'CalSil+ per label (Bokashi) — STARTS here', 'Molasses 1-2 ml/gal', 'Quillaja ¼ tsp/gal', 'Aloe Vera Powder ½ tsp/gal (Jay Plantspeaker)'],
         action: ['Continue weaving branches through scrog'],
         environment: ['Pull RH slightly lower'],
         watchFor: ['💧 DAILY: Check soil moisture by feel (1-2" deep) — water with Quillaja if approaching dry', 'Bud sites forming at every node', 'White pistils emerging'],
@@ -139,7 +139,7 @@ const SOP = {
       tempOn: '78-80', rhOn: '55-60', vpdOn: '1.0-1.2', tempOff: '68-70', rhOff: '50-55', vpdOff: '1.0-1.2',
       light: '85% · PAR 850-950', lightHeight: '16-18"',
       tasks: {
-        feed: ['BuildABloom ¼ tsp/gal', 'Bio Phos 5ml/gal', 'Microbe Complete or Microbe+ ½ tsp/gal', 'K Humate 15ml/gal (Bokashi)', 'Quillaja ¼ tsp/gal', '⚠️ SKIP Molasses — K Humate covers K this week'],
+        feed: ['BuildABloom ¼ tsp/gal', 'Bio Phos 5ml/gal', 'Microbe Complete or Microbe+ ½ tsp/gal', 'K Humate 15ml/gal (Bokashi)', 'Quillaja ¼ tsp/gal', '⚠️ SKIP Molasses — K Humate covers K this week', 'Aloe Vera Powder ½ tsp/gal (Jay Plantspeaker)'],
         action: ['✂️ DAY 21 STRIP — aggressive defoliation', 'Open up canopy airflow', '🦟 Final WDG3000 if gnats still present (stop after this)'],
         environment: ['Begin tightening environment'],
         watchFor: ['💧 DAILY: Check soil moisture by feel (1-2" deep) — water with Quillaja if approaching dry', 'Stretch ending — switch to outward bud growth', 'Plants stop getting taller'],
@@ -151,7 +151,7 @@ const SOP = {
       tempOn: '78-80', rhOn: '55-60', vpdOn: '1.0-1.2', tempOff: '68-70', rhOff: '50-55', vpdOff: '1.0-1.2',
       light: '90-100% · PAR 950-1100', lightHeight: '16-18"',
       tasks: {
-        feed: ['BuildABloom ½ tsp/gal', 'Bio Phos 5ml/gal', 'Big 6 Microbes ½ tsp/gal', 'K Humate 15ml/gal', 'CalSil+ per label', 'Quillaja ¼ tsp/gal', '⚠️ SKIP Molasses — K Humate covers K this week'],
+        feed: ['BuildABloom ½ tsp/gal', 'Bio Phos 5ml/gal', 'Big 6 Microbes ½ tsp/gal', 'K Humate 15ml/gal', 'CalSil+ per label', 'Quillaja ¼ tsp/gal', '⚠️ SKIP Molasses — K Humate covers K this week', 'Aloe Vera Powder ½ tsp/gal (Jay Plantspeaker)'],
         action: ['🔥 PUSH LIGHT TO 90-100%', 'Verify temps holding under load'],
         environment: ['Both ACs running consistently if needed', 'Manage temps as light goes up'],
         watchFor: ['💧 DAILY: Check soil moisture by feel (1-2" deep) — water with Quillaja if approaching dry', 'First trichomes visible', 'Buds starting to bulk'],
@@ -163,7 +163,7 @@ const SOP = {
       tempOn: '75-78', rhOn: '50-55', vpdOn: '1.1-1.4', tempOff: '67-69', rhOff: '40-50', vpdOff: '1.0-1.3',
       light: '95-100% · PAR 1000-1100', lightHeight: '16-18"',
       tasks: {
-        feed: ['BuildABloom ½ tsp/gal', 'Bio Phos 5ml/gal', 'Big 6 Microbes ½ tsp/gal', 'Molasses 1-2 ml/gal (last week)', 'Quillaja ¼ tsp/gal'],
+        feed: ['BuildABloom ½ tsp/gal', 'Bio Phos 5ml/gal', 'Big 6 Microbes ½ tsp/gal', 'Molasses 1-2 ml/gal (last week)', 'Quillaja ¼ tsp/gal', 'Aloe Vera Powder ½ tsp/gal (Jay Plantspeaker)'],
         action: ['❄️ BIG ENVIRONMENT SHIFT — drop temps & RH, cold nights START now', 'Light defol only — targeted, don\'t strip'],
         environment: ['Drop lights-on 80°F → 75-78°F', 'Drop lights-off 73-75°F → 65°F (the big change)', 'Both ACs aggressive — this is the money week for AC budget'],
         watchFor: ['💧 DAILY: Check soil moisture by feel (1-2" deep) — water with Quillaja if approaching dry', 'Buds bulking visibly', 'Trichome density increasing'],
@@ -175,7 +175,7 @@ const SOP = {
       tempOn: '75-78', rhOn: '50-55', vpdOn: '1.1-1.4', tempOff: '67-69', rhOff: '40-50', vpdOff: '1.0-1.3',
       light: '90% · PAR 900-1000', lightHeight: '18"',
       tasks: {
-        feed: ['BuildABloom ¼ tsp/gal (taper)', 'Bio Phos 3ml/gal (taper)', 'Big 6 Microbes ½ tsp/gal', 'CalSil+ per label', 'Quillaja ¼ tsp/gal'],
+        feed: ['BuildABloom ¼ tsp/gal (taper)', 'Bio Phos 3ml/gal (taper)', 'Big 6 Microbes ½ tsp/gal', 'CalSil+ per label', 'Quillaja ¼ tsp/gal', 'Aloe Vera Powder ½ tsp/gal (Jay Plantspeaker)'],
         action: ['❄️ HOLD cold nights (began F5)', 'Stop Molasses', 'Run portable AC during lights-off'],
         environment: ['Lights-off target 65-68°F', 'Aim for 8-10°F day/night differential'],
         watchFor: ['💧 DAILY: Check soil moisture by feel (1-2" deep) — water with Quillaja if approaching dry', 'Color changes (anthocyanin if genetics allow)', 'Trichomes shifting from clear to milky'],
@@ -187,7 +187,7 @@ const SOP = {
       tempOn: '75-78', rhOn: '45-50', vpdOn: '1.2-1.5', tempOff: '67-69', rhOff: '40-48', vpdOff: '1.1-1.4',
       light: '85% · PAR 850-950', lightHeight: '18-20"',
       tasks: {
-        feed: ['Plain water + Quillaja ¼ tsp/gal', 'CalSil+ final application (calcium demand peaks at high VPD finish)'],
+        feed: ['Plain water + Quillaja ¼ tsp/gal', 'CalSil+ final application (calcium demand peaks at high VPD finish)', 'Aloe Vera Powder ½ tsp/gal (Jay Plantspeaker)'],
         action: ['💡 DIM LIGHT TO 85%', 'Maintain cold nights aggressively'],
         environment: ['Both ACs maximum during lights-off', 'Light dim reduces stress for finish'],
         watchFor: ['💧 DAILY: Check soil moisture by feel (1-2" deep) — water with Quillaja if approaching dry', 'Pistils browning', 'Trichomes mostly milky', 'Smell loudest now'],
@@ -199,7 +199,7 @@ const SOP = {
       tempOn: '73-76', rhOn: '45-50', vpdOn: '1.2-1.5', tempOff: '67-69', rhOff: '40-45', vpdOff: '1.2-1.4',
       light: '80% · PAR 850-950', lightHeight: '20"',
       tasks: {
-        feed: ['Plain water only', 'Last water 24-48 hours before chop'],
+        feed: ['Plain water only', 'Last water 24-48 hours before chop', 'Aloe Vera Powder ½ tsp/gal (Jay Plantspeaker)'],
         action: ['🔍 Check trichomes daily with loupe/scope', '📅 Plan chop day'],
         environment: ['Drop temps to 60-62°F for 24hr pre-chop if possible', 'Lights off 24-48hr pre-chop'],
         watchFor: ['💧 DAILY: Check soil moisture by feel (1-2" deep) — water with Quillaja if approaching dry', 'Trichomes 80-90% cloudy, 10-20% amber (TARGET)', 'Caryophyllene is heat-stable — can ripen a touch longer for fuller body'],
@@ -384,12 +384,60 @@ const HISTORICAL_GROWS = [
 // Note: ratios above use yieldGrams. 147g/75g = 1.96x yield gap side-by-side same tent.
 
 const defaultState = {
-  growStartDate: null,
+  growStartDate: '2026-06-10', // seeds started (solo cups)
   currentWeekId: 'clone',
+  weekMode: 'auto', // 'auto' = compute week from start date; 'manual' = user pins currentWeekId
+  flipDate: null,   // set when you flip to 12/12; flower weeks count from here
+  events: [
+    { id: 'seed', date: '2026-06-10', label: 'Seeds started (solo cups)' },
+    { id: 'transplant', date: '2026-06-29', label: 'Transplanted to City Pickers' },
+  ],
   completedTasks: {}, // { 'veg1:feed:0': true, ... }
   weeklyData: {}, // { 'veg1': { notes: '', photoUrl: '', envSummary: {}, observations: '' } }
   envReadings: [], // [{ week: 'veg1', tempOnAvg, tempOffAvg, rhOnAvg, rhOffAvg, vpdOnAvg, vpdOffAvg, sourceUploadDate }]
 };
+
+// ---- date + week helpers ----
+const DAY = 86400000;
+function daysBetween(aISO, bDate) {
+  if (!aISO) return null;
+  const a = new Date(aISO + 'T00:00:00');
+  return Math.floor((bDate - a) / DAY);
+}
+// Auto-estimate which SOP week index you're on.
+// If a flipDate is set, weeks count from the flip (so an early/late flip is
+// respected): the day you flip = the 'flip' SOP week, then +1 week each week.
+// Before any flip, weeks count from the start date but never auto-advance past
+// the flip week (you have to actually flip to enter flower).
+function autoWeekIndex(startISO, weeksLen, today = new Date(), flipISO = null, flipWeekIdx = null) {
+  if (flipISO && flipWeekIdx != null) {
+    const df = daysBetween(flipISO, today);
+    if (df != null && df >= 0) {
+      return Math.min(flipWeekIdx + Math.floor(df / 7), weeksLen - 1);
+    }
+  }
+  const d = daysBetween(startISO, today);
+  if (d == null || d < 0) return 0;
+  const raw = Math.floor(d / 7);
+  // Cap pre-flip auto-advance at the LAST VEG week (flipWeekIdx - 1); you must
+  // actually flip to enter the flip/flower weeks.
+  const cap = flipWeekIdx != null ? Math.max(0, flipWeekIdx - 1) : weeksLen - 1;
+  return Math.min(raw, cap);
+}
+function fmtDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso + 'T00:00:00');
+  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+}
+// Calendar date range for a given SOP week index, based on start date.
+function weekDateRange(startISO, idx) {
+  if (!startISO) return '';
+  const start = new Date(startISO + 'T00:00:00');
+  const s = new Date(start.getTime() + idx * 7 * DAY);
+  const e = new Date(s.getTime() + 6 * DAY);
+  const f = (d) => d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+  return `${f(s)}–${f(e)}`;
+}
 
 function StatusPill({ status, children }) {
   const colors = {
@@ -727,10 +775,18 @@ function ChangesThisWeek({ week, latestEnv, completedTasks }) {
 }
 
 function Dashboard({ state, setState, canEdit }) {
-  const rawIdx = SOP.weeks.findIndex(w => w.id === state.currentWeekId);
-  const currentIdx = rawIdx === -1 ? 0 : rawIdx;
+  // In auto mode, the displayed week is computed from the start date.
+  // In manual mode, it follows the pinned currentWeekId.
+  const weekMode = state.weekMode || 'auto';
+  const flipWeekIdx = SOP.weeks.findIndex(w => w.id === 'flip');
+  const autoIdx = autoWeekIndex(state.growStartDate, SOP.weeks.length, new Date(), state.flipDate, flipWeekIdx);
+  const pinnedIdx = SOP.weeks.findIndex(w => w.id === state.currentWeekId);
+  const currentIdx = weekMode === 'auto'
+    ? autoIdx
+    : (pinnedIdx === -1 ? 0 : pinnedIdx);
   const currentWeek = SOP.weeks[currentIdx];
   const nextWeek = SOP.weeks[currentIdx + 1];
+  const dateRange = weekDateRange(state.growStartDate, currentIdx);
 
   const phaseColors = {
     clone: '#a3e635',
@@ -765,17 +821,43 @@ function Dashboard({ state, setState, canEdit }) {
   // Latest environment reading for current week
   const latestEnv = state.envReadings.filter(r => r.week === currentWeek.id).slice(-1)[0];
 
+  // Manually stepping weeks switches to manual mode and pins the week.
   const advanceWeek = () => {
     if (currentIdx < SOP.weeks.length - 1) {
-      setState(prev => ({ ...prev, currentWeekId: SOP.weeks[currentIdx + 1].id }));
+      setState(prev => ({ ...prev, weekMode: 'manual', currentWeekId: SOP.weeks[currentIdx + 1].id }));
     }
   };
 
   const previousWeek = () => {
     if (currentIdx > 0) {
-      setState(prev => ({ ...prev, currentWeekId: SOP.weeks[currentIdx - 1].id }));
+      setState(prev => ({ ...prev, weekMode: 'manual', currentWeekId: SOP.weeks[currentIdx - 1].id }));
     }
   };
+
+  const resetToAuto = () => {
+    setState(prev => ({ ...prev, weekMode: 'auto' }));
+  };
+
+  // Flip to flower NOW — from wherever you are in veg. Sets today as the flip
+  // date, logs the event, and jumps to the flip week. Flower weeks then count
+  // from today, so flipping early (or late) is fully respected.
+  const flipToFlower = () => {
+    const todayISO = new Date().toISOString().slice(0, 10);
+    setState(prev => {
+      const alreadyLogged = (prev.events || []).some(e => e.id === 'flip');
+      const events = alreadyLogged
+        ? prev.events.map(e => e.id === 'flip' ? { ...e, date: todayISO } : e)
+        : [...(prev.events || []), { id: 'flip', date: todayISO, label: 'Flipped to flower (12/12)' }];
+      return {
+        ...prev,
+        flipDate: todayISO,
+        weekMode: 'auto',        // resume auto — now counting from flip
+        currentWeekId: 'flip',
+        events,
+      };
+    });
+  };
+  const isFlowering = currentIdx >= flipWeekIdx;
 
   return (
     <div className="space-y-5">
@@ -805,10 +887,35 @@ function Dashboard({ state, setState, canEdit }) {
       {/* Current week */}
       <Card>
         <div className="flex items-start justify-between mb-4">
-          <WeekHeader week={currentWeek} weekIdx={currentIdx} />
-          <div className="flex gap-1">
-            <button onClick={previousWeek} disabled={currentIdx === 0} className="px-2 py-1 text-xs rounded border border-hair text-faded hover:bg-paper disabled:opacity-30">← Prev</button>
-            <button onClick={advanceWeek} disabled={currentIdx === SOP.weeks.length - 1} className="px-2 py-1 text-xs rounded border border-hair text-faded hover:bg-paper disabled:opacity-30">Next →</button>
+          <div>
+            <WeekHeader week={currentWeek} weekIdx={currentIdx} />
+            {state.growStartDate && (
+              <div className="mt-1 flex items-center gap-2 text-[11px] text-faded">
+                <span className="font-mono uppercase tracking-wide">{dateRange}</span>
+                <span className="opacity-40">·</span>
+                {weekMode === 'auto' ? (
+                  <span className="uppercase tracking-wide">auto</span>
+                ) : (
+                  <button onClick={resetToAuto} className="uppercase tracking-wide text-red hover:underline">manual · back to auto</button>
+                )}
+              </div>
+            )}
+          </div>
+          <div className="flex flex-col items-end gap-1.5">
+            <div className="flex gap-1">
+              <button onClick={previousWeek} disabled={currentIdx === 0} className="px-2 py-1 text-xs rounded border border-hair text-faded hover:bg-paper disabled:opacity-30">← Prev</button>
+              <button onClick={advanceWeek} disabled={currentIdx === SOP.weeks.length - 1} className="px-2 py-1 text-xs rounded border border-hair text-faded hover:bg-paper disabled:opacity-30">Next →</button>
+            </div>
+            {canEdit && !isFlowering && currentIdx > 0 && (
+              <button
+                onClick={flipToFlower}
+                className="px-3 py-1.5 text-xs rounded bg-mag text-white font-bold uppercase tracking-wide border-2 border-void hover:bg-red"
+                style={{ boxShadow: '2px 2px 0 #000' }}
+                title="Flip to 12/12 today — flower weeks count from now"
+              >
+                ⚡ Flip to flower now
+              </button>
+            )}
           </div>
         </div>
 
@@ -936,35 +1043,51 @@ function Environment({ state, setState }) {
   const [pasteValue, setPasteValue] = useState('');
   const [parseError, setParseError] = useState('');
   const [parseResult, setParseResult] = useState(null);
+  const [fileName, setFileName] = useState('');
 
-  // Parse the AC Infinity CSV
+  // Read an attached .csv/.txt file and parse it.
+  const handleFile = (file) => {
+    if (!file) return;
+    setFileName(file.name);
+    const reader = new FileReader();
+    reader.onload = (e) => { parseCSV(String(e.target.result || '')); };
+    reader.onerror = () => setParseError('Could not read that file. Try again.');
+    reader.readAsText(file);
+  };
+
+  // Parse the AC Infinity export — robust to tabs OR commas, metadata
+  // preamble, and blank lines between rows. AC Infinity exports .csv that is
+  // actually TAB-separated with an 8-line header block, so we auto-detect.
   const parseCSV = (text) => {
     setParseError('');
     setParseResult(null);
-    const lines = text.split('\n');
+    const rawLines = text.split(/\r?\n/);
     const readings = [];
-    for (const line of lines) {
-      const cleaned = line.replace(/"/g, '').trim();
-      if (!cleaned || !cleaned.includes('/') || !cleaned.includes(':')) continue;
-      const parts = cleaned.split(',');
-      if (parts.length < 4) continue;
-      const dateMatch = parts[0].match(/(\d+)\/(\d+)\/(\d+)\s+(\d+):(\d+)\s+(AM|PM)/i);
+    for (const raw of rawLines) {
+      const cleaned = raw.replace(/"/g, '').trim();
+      if (!cleaned) continue;
+      // A real data row must start with a date+time; this also skips the
+      // metadata preamble (Device ID, Export Time, etc.) and the header row.
+      const dateMatch = cleaned.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})\s*(AM|PM)/i);
       if (!dateMatch) continue;
-      const temp = parseFloat(parts[1]);
-      const rh = parseFloat(parts[2]);
-      const vpd = parseFloat(parts[3]);
-      if (isNaN(temp) || isNaN(rh) || isNaN(vpd)) continue;
+      // Split on tabs, commas, OR runs of 2+ spaces — whichever the file uses.
+      const parts = cleaned.split(/\t+|,|\s{2,}/).map(p => p.trim()).filter(p => p !== '');
+      if (parts.length < 4) continue;
+      // parts[0] is the datetime; the next three numeric fields are T, RH, VPD.
+      const nums = parts.slice(1).map(parseFloat).filter(n => !isNaN(n));
+      if (nums.length < 3) continue;
+      const [temp, rh, vpd] = nums;
       const [, m, d, y, h, mi, ampm] = dateMatch;
       let hour = parseInt(h);
       if (ampm.toUpperCase() === 'PM' && hour !== 12) hour += 12;
       if (ampm.toUpperCase() === 'AM' && hour === 12) hour = 0;
       const date = new Date(parseInt(y), parseInt(m) - 1, parseInt(d), hour, parseInt(mi));
-      const isLightsOn = hour < 12; // From CSV analysis: AM = lights on
+      const isLightsOn = hour < 12; // AM sample = lights on
       readings.push({ date, temp, rh, vpd, isLightsOn });
     }
 
     if (readings.length === 0) {
-      setParseError('Could not parse any readings. Make sure this is the raw AC Infinity export.');
+      setParseError('No readings found. Attach the raw AC Infinity .csv export (it has a Time / Temperature / Relative Humidity / VPD table).');
       return null;
     }
 
@@ -1003,6 +1126,7 @@ function Environment({ state, setState }) {
       envReadings: [...prev.envReadings, reading],
     }));
     setPasteValue('');
+    setFileName('');
     setParseResult(null);
     setParseError('');
   };
@@ -1026,27 +1150,35 @@ function Environment({ state, setState }) {
       <Card>
         <h2 className="text-xl font-semibold text-ink mb-1">Environment Readings</h2>
         <p className="text-sm text-faded mb-4">
-          Export your AC Infinity data weekly: in the AC Infinity app, go to your sensor → settings → export CSV. Paste it below.
+          Export your AC Infinity data: in the AC Infinity app, go to your sensor → settings → export CSV, then attach the file here. Tabs or commas, any date range — it'll figure it out.
         </p>
 
-        <textarea
-          value={pasteValue}
-          onChange={e => setPasteValue(e.target.value)}
-          placeholder='Paste your AC Infinity CSV export here. It looks like rows of "MM/DD/YYYY HH:MM AM/PM",temp,RH,VPD...'
-          className="w-full h-32 px-3 py-2 border border-ink rounded-lg text-sm font-mono"
-        />
+        <label
+          onDragOver={(e) => { e.preventDefault(); }}
+          onDrop={(e) => { e.preventDefault(); handleFile(e.dataTransfer.files && e.dataTransfer.files[0]); }}
+          className="block cursor-pointer border-2 border-dashed border-ink rounded-lg px-4 py-8 text-center hover:bg-paper transition-colors"
+        >
+          <input
+            type="file"
+            accept=".csv,.tsv,.txt,text/csv,text/plain"
+            className="hidden"
+            onChange={(e) => handleFile(e.target.files && e.target.files[0])}
+          />
+          <div className="flex flex-col items-center gap-2">
+            <Upload size={22} className="text-red" />
+            <div className="font-semibold text-ink text-sm">
+              {fileName ? fileName : 'Attach your AC Infinity .csv'}
+            </div>
+            <div className="text-[11px] text-faded uppercase tracking-wide">
+              click to browse · or drag &amp; drop
+            </div>
+          </div>
+        </label>
 
         <div className="flex gap-2 mt-3">
-          <button
-            onClick={() => parseCSV(pasteValue)}
-            disabled={!pasteValue.trim()}
-            className="px-4 py-2 bg-red text-white rounded-lg text-sm font-medium hover:bg-ink disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
-          >
-            <Upload size={14} /> Parse CSV
-          </button>
-          {pasteValue && (
+          {fileName && (
             <button
-              onClick={() => { setPasteValue(''); setParseResult(null); setParseError(''); }}
+              onClick={() => { setFileName(''); setParseResult(null); setParseError(''); }}
               className="px-4 py-2 border border-ink text-ink rounded-lg text-sm hover:bg-paper"
             >
               Clear
@@ -1279,6 +1411,65 @@ function Journal({ state, setState }) {
 // =============================================================
 // SETTINGS VIEW (start date, reset, export)
 // =============================================================
+// =============================================================
+// EVENT LOG — full dated timeline of key grow events
+// =============================================================
+function EventLog({ state, setState }) {
+  const [newDate, setNewDate] = useState('');
+  const [newLabel, setNewLabel] = useState('');
+
+  const events = [...(state.events || [])].sort((a, b) => (a.date < b.date ? -1 : 1));
+
+  const addEvent = () => {
+    if (!newDate || !newLabel.trim()) return;
+    const ev = { id: 'ev_' + Date.now(), date: newDate, label: newLabel.trim() };
+    setState(prev => ({ ...prev, events: [...(prev.events || []), ev] }));
+    setNewDate(''); setNewLabel('');
+  };
+
+  const removeEvent = (id) => {
+    setState(prev => ({ ...prev, events: (prev.events || []).filter(e => e.id !== id) }));
+  };
+
+  return (
+    <div className="border-t border-hair pt-4 mb-5">
+      <div className="text-xs uppercase tracking-wide text-faded font-semibold mb-3">Event log</div>
+
+      <div className="space-y-1.5 mb-4">
+        {events.length === 0 && (
+          <p className="text-sm text-faded">No events yet. Log toppings, defol, flip, feed changes, chop — anything.</p>
+        )}
+        {events.map(ev => (
+          <div key={ev.id} className="flex items-center gap-3 text-sm py-1.5 border-b border-dotted border-hair">
+            <span className="font-mono text-xs text-red uppercase tracking-wide w-16 flex-shrink-0">{fmtDate(ev.date)}</span>
+            <span className="text-ink flex-1">{ev.label}</span>
+            <button onClick={() => removeEvent(ev.id)} className="text-faded hover:text-red text-xs px-1" aria-label="Remove event">✕</button>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex flex-wrap gap-2 items-end">
+        <div>
+          <label className="text-[10px] uppercase tracking-wide text-faded block mb-1">Date</label>
+          <input type="date" value={newDate} onChange={e => setNewDate(e.target.value)}
+            className="px-2 py-1.5 border border-ink rounded text-sm" />
+        </div>
+        <div className="flex-1 min-w-[160px]">
+          <label className="text-[10px] uppercase tracking-wide text-faded block mb-1">What happened</label>
+          <input type="text" value={newLabel} onChange={e => setNewLabel(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') addEvent(); }}
+            placeholder="e.g. Topped above 6th node"
+            className="w-full px-2 py-1.5 border border-ink rounded text-sm" />
+        </div>
+        <button onClick={addEvent} disabled={!newDate || !newLabel.trim()}
+          className="px-4 py-1.5 bg-red text-white rounded text-sm font-medium hover:bg-ink disabled:opacity-40">
+          Add
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function Settings({ state, setState }) {
   const [showResetConfirm, setShowResetConfirm] = useState(false);
 
@@ -1297,16 +1488,54 @@ function Settings({ state, setState }) {
       <Card>
         <h2 className="text-xl font-semibold text-ink mb-4">Settings</h2>
 
-        <div className="mb-5">
-          <label className="text-xs uppercase tracking-wide text-faded font-semibold block mb-1">Grow start date</label>
-          <input
-            type="date"
-            value={state.growStartDate || ''}
-            onChange={e => setState(prev => ({ ...prev, growStartDate: e.target.value }))}
-            className="px-3 py-2 border border-ink rounded-lg text-sm"
-          />
-          <p className="text-xs text-faded mt-1">Used for "days in" counter on dashboard.</p>
+        <div className="mb-5 grid sm:grid-cols-2 gap-4">
+          <div>
+            <label className="text-xs uppercase tracking-wide text-faded font-semibold block mb-1">Grow start date</label>
+            <input
+              type="date"
+              value={state.growStartDate || ''}
+              onChange={e => setState(prev => ({ ...prev, growStartDate: e.target.value }))}
+              className="px-3 py-2 border border-ink rounded-lg text-sm w-full"
+            />
+            <p className="text-xs text-faded mt-1">Seeds/solo cups. Drives the auto week + per-week dates.</p>
+          </div>
+          <div>
+            <label className="text-xs uppercase tracking-wide text-faded font-semibold block mb-1">Flip date (12/12)</label>
+            <input
+              type="date"
+              value={state.flipDate || ''}
+              onChange={e => setState(prev => ({ ...prev, flipDate: e.target.value }))}
+              className="px-3 py-2 border border-ink rounded-lg text-sm w-full"
+            />
+            <p className="text-xs text-faded mt-1">Set when you flip. Flower weeks count from here.</p>
+          </div>
         </div>
+
+        <div className="mb-5 p-3 rounded-lg bg-paper border border-hair">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-xs uppercase tracking-wide text-faded font-semibold">Week tracking</div>
+              <div className="text-sm text-ink mt-0.5">
+                {(state.weekMode || 'auto') === 'auto'
+                  ? 'Auto — week is computed from your start date.'
+                  : 'Manual — you\'ve pinned a specific SOP week.'}
+              </div>
+            </div>
+            {(state.weekMode || 'auto') === 'manual' && (
+              <button
+                onClick={() => setState(prev => ({ ...prev, weekMode: 'auto' }))}
+                className="px-3 py-1.5 border border-ink rounded text-xs hover:bg-panel"
+              >
+                Back to auto
+              </button>
+            )}
+          </div>
+          <p className="text-xs text-faded mt-2 leading-relaxed">
+            Auto estimates your week (~7 days each) from the start date. Since you read the plant — not the calendar — use the Prev/Next arrows on the dashboard to pin the actual SOP week you're in; that switches to manual until you come back to auto.
+          </p>
+        </div>
+
+        <EventLog state={state} setState={setState} />
 
         <div className="border-t border-hair pt-4 mb-5">
           <button
