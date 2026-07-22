@@ -439,6 +439,27 @@ function weekDateRange(startISO, idx) {
   return `${f(s)}–${f(e)}`;
 }
 
+// Map an arbitrary calendar date to a SOP week index, respecting the real
+// flip milestone. Before flip: count 7-day blocks from seed, capped at last
+// veg week. On/after flip: count 7-day blocks from the flip date into flower.
+// This is the hybrid: automatic, but anchored to the real flip you logged.
+function dateToWeekIndex(dateObj, startISO, flipISO, flipWeekIdx, weeksLen) {
+  if (!startISO) return 0;
+  if (flipISO && flipWeekIdx != null) {
+    const flip = new Date(flipISO + 'T00:00:00');
+    if (dateObj >= flip) {
+      const df = Math.floor((dateObj - flip) / DAY);
+      return Math.min(flipWeekIdx + Math.floor(df / 7), weeksLen - 1);
+    }
+  }
+  const start = new Date(startISO + 'T00:00:00');
+  const d = Math.floor((dateObj - start) / DAY);
+  if (d < 0) return 0;
+  const raw = Math.floor(d / 7);
+  const cap = flipWeekIdx != null ? Math.max(0, flipWeekIdx - 1) : weeksLen - 1;
+  return Math.min(raw, cap);
+}
+
 function StatusPill({ status, children }) {
   const colors = {
     good: 'bg-panel text-ink border-ink',
@@ -1043,6 +1064,7 @@ function Environment({ state, setState }) {
   const [pasteValue, setPasteValue] = useState('');
   const [parseError, setParseError] = useState('');
   const [parseResult, setParseResult] = useState(null);
+  const [parseProposal, setParseProposal] = useState(null); // [{weekIdx, weekId, ...avgs}]
   const [fileName, setFileName] = useState('');
 
   // Read an attached .csv/.txt file and parse it.
@@ -1091,43 +1113,80 @@ function Environment({ state, setState }) {
       return null;
     }
 
-    // Compute averages
-    const lightsOn = readings.filter(r => r.isLightsOn);
-    const lightsOff = readings.filter(r => !r.isLightsOn);
+    // Sort chronologically
+    readings.sort((a, b) => a.date - b.date);
+
     const avg = (arr, key) => arr.length ? arr.reduce((s, r) => s + r[key], 0) / arr.length : 0;
+    const flipWeekIdx = SOP.weeks.findIndex(w => w.id === 'flip');
 
-    const result = {
-      readingCount: readings.length,
-      dateRange: {
-        start: readings[0].date.toLocaleDateString(),
-        end: readings[readings.length - 1].date.toLocaleDateString(),
-      },
-      tempOnAvg: avg(lightsOn, 'temp'),
-      tempOffAvg: avg(lightsOff, 'temp'),
-      rhOnAvg: avg(lightsOn, 'rh'),
-      rhOffAvg: avg(lightsOff, 'rh'),
-      vpdOnAvg: avg(lightsOn, 'vpd'),
-      vpdOffAvg: avg(lightsOff, 'vpd'),
-    };
+    // Bucket every reading into the SOP week its DATE maps to (hybrid mapping).
+    const buckets = {}; // weekIdx -> readings[]
+    for (const r of readings) {
+      const idx = dateToWeekIndex(r.date, state.growStartDate, state.flipDate, flipWeekIdx, SOP.weeks.length);
+      (buckets[idx] = buckets[idx] || []).push(r);
+    }
 
-    setParseResult(result);
-    return result;
+    // Build a per-week proposal the user can review + remap before saving.
+    const proposal = Object.keys(buckets).map(k => {
+      const idx = parseInt(k);
+      const rs = buckets[idx];
+      const on = rs.filter(r => r.isLightsOn);
+      const off = rs.filter(r => !r.isLightsOn);
+      return {
+        weekIdx: idx,
+        weekId: SOP.weeks[idx].id,
+        weekLabel: SOP.weeks[idx].label,
+        readingCount: rs.length,
+        dateStart: rs[0].date.toLocaleDateString(),
+        dateEnd: rs[rs.length - 1].date.toLocaleDateString(),
+        tempOnAvg: avg(on, 'temp'), tempOffAvg: avg(off, 'temp'),
+        rhOnAvg: avg(on, 'rh'), rhOffAvg: avg(off, 'rh'),
+        vpdOnAvg: avg(on, 'vpd'), vpdOffAvg: avg(off, 'vpd'),
+      };
+    }).sort((a, b) => a.weekIdx - b.weekIdx);
+
+    // If the upload is a single week's worth, this still works — it'll just be
+    // a one-row proposal. Multi-week uploads produce multiple rows.
+    setParseProposal(proposal);
+    setParseResult(null);
+    return proposal;
   };
 
-  const handleAttachToWeek = (weekId) => {
-    if (!parseResult) return;
-    const reading = {
-      week: weekId,
-      ...parseResult,
-      uploadDate: new Date().toISOString(),
-    };
-    setState(prev => ({
-      ...prev,
-      envReadings: [...prev.envReadings, reading],
+  // Remap one proposal row to a different SOP week (user override in review).
+  const remapProposalRow = (rowIdx, newWeekId) => {
+    setParseProposal(prev => prev.map((row, i) => {
+      if (i !== rowIdx) return row;
+      const wIdx = SOP.weeks.findIndex(w => w.id === newWeekId);
+      return { ...row, weekIdx: wIdx, weekId: newWeekId, weekLabel: SOP.weeks[wIdx].label };
     }));
-    setPasteValue('');
+  };
+
+  // Drop a row from the proposal (don't save that week).
+  const dropProposalRow = (rowIdx) => {
+    setParseProposal(prev => prev.filter((_, i) => i !== rowIdx));
+  };
+
+  // Save ALL proposed weeks at once. Each week replaces any prior reading for
+  // that same week (so re-uploading a fuller export updates cleanly).
+  const saveProposal = () => {
+    if (!parseProposal || parseProposal.length === 0) return;
+    const uploadDate = new Date().toISOString();
+    setState(prev => {
+      const incomingWeekIds = new Set(parseProposal.map(p => p.weekId));
+      const kept = prev.envReadings.filter(r => !incomingWeekIds.has(r.week));
+      const added = parseProposal.map(p => ({
+        week: p.weekId,
+        readingCount: p.readingCount,
+        dateRange: { start: p.dateStart, end: p.dateEnd },
+        tempOnAvg: p.tempOnAvg, tempOffAvg: p.tempOffAvg,
+        rhOnAvg: p.rhOnAvg, rhOffAvg: p.rhOffAvg,
+        vpdOnAvg: p.vpdOnAvg, vpdOffAvg: p.vpdOffAvg,
+        uploadDate,
+      }));
+      return { ...prev, envReadings: [...kept, ...added] };
+    });
+    setParseProposal(null);
     setFileName('');
-    setParseResult(null);
     setParseError('');
   };
 
@@ -1176,9 +1235,9 @@ function Environment({ state, setState }) {
         </label>
 
         <div className="flex gap-2 mt-3">
-          {fileName && (
+          {(fileName || parseProposal) && (
             <button
-              onClick={() => { setFileName(''); setParseResult(null); setParseError(''); }}
+              onClick={() => { setFileName(''); setParseResult(null); setParseProposal(null); setParseError(''); }}
               className="px-4 py-2 border border-ink text-ink rounded-lg text-sm hover:bg-paper"
             >
               Clear
@@ -1193,35 +1252,55 @@ function Environment({ state, setState }) {
           </div>
         )}
 
-        {parseResult && (
-          <div className="mt-4 p-4 bg-panel border border-hair rounded-lg">
-            <div className="flex justify-between items-start mb-3">
-              <div>
-                <div className="font-semibold text-ink">Parsed {parseResult.readingCount} readings</div>
-                <div className="text-xs text-faded">{parseResult.dateRange.start} → {parseResult.dateRange.end}</div>
+        {parseProposal && parseProposal.length > 0 && (
+          <div className="mt-4">
+            <div className="flex items-center justify-between mb-2">
+              <div className="font-semibold text-ink text-sm">
+                Found {parseProposal.length} week{parseProposal.length > 1 ? 's' : ''} of data — review before saving
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-2 text-sm mb-4">
-              <div className="bg-paper rounded p-2 border border-hair">
-                <div className="text-[10px] uppercase tracking-wide text-faded">Lights ON avg</div>
-                <div className="font-semibold">{parseResult.tempOnAvg.toFixed(1)}°F · {parseResult.rhOnAvg.toFixed(0)}% RH · VPD {parseResult.vpdOnAvg.toFixed(2)}</div>
-              </div>
-              <div className="bg-paper rounded p-2 border border-hair">
-                <div className="text-[10px] uppercase tracking-wide text-faded">Lights OFF avg</div>
-                <div className="font-semibold">{parseResult.tempOffAvg.toFixed(1)}°F · {parseResult.rhOffAvg.toFixed(0)}% RH · VPD {parseResult.vpdOffAvg.toFixed(2)}</div>
-              </div>
-            </div>
-            <div className="text-xs text-faded mb-2">Attach this reading to a week:</div>
-            <select
-              onChange={e => e.target.value && handleAttachToWeek(e.target.value)}
-              defaultValue=""
-              className="w-full px-3 py-2 border border-ink rounded-lg text-sm"
-            >
-              <option value="">Choose a week...</option>
-              {SOP.weeks.map(w => (
-                <option key={w.id} value={w.id}>{w.label} — {w.stage}</option>
+            <p className="text-xs text-faded mb-3 leading-relaxed">
+              Each row was auto-assigned to a grow week using your start date and flip date. Wrong? Remap it. Data saves per week — re-uploading a fuller export updates cleanly.
+            </p>
+
+            <div className="space-y-2">
+              {parseProposal.map((row, i) => (
+                <div key={i} className="p-3 bg-panel border border-hair rounded-lg">
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <select
+                      value={row.weekId}
+                      onChange={e => remapProposalRow(i, e.target.value)}
+                      className="px-2 py-1 border border-ink rounded text-sm font-semibold bg-paper"
+                    >
+                      {SOP.weeks.map(w => (
+                        <option key={w.id} value={w.id}>{w.label} — {w.stage}</option>
+                      ))}
+                    </select>
+                    <div className="text-[11px] text-faded whitespace-nowrap">
+                      {row.dateStart} → {row.dateEnd} · {row.readingCount} readings
+                    </div>
+                    <button onClick={() => dropProposalRow(i)} className="text-faded hover:text-red text-xs px-1" title="Don't save this week">✕</button>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div className="bg-paper rounded p-2 border border-hair">
+                      <div className="text-[10px] uppercase tracking-wide text-faded">Lights ON</div>
+                      <div className="font-semibold">{row.tempOnAvg.toFixed(1)}°F · {row.rhOnAvg.toFixed(0)}% · VPD {row.vpdOnAvg.toFixed(2)}</div>
+                    </div>
+                    <div className="bg-paper rounded p-2 border border-hair">
+                      <div className="text-[10px] uppercase tracking-wide text-faded">Lights OFF</div>
+                      <div className="font-semibold">{row.tempOffAvg.toFixed(1)}°F · {row.rhOffAvg.toFixed(0)}% · VPD {row.vpdOffAvg.toFixed(2)}</div>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </select>
+            </div>
+
+            <button
+              onClick={saveProposal}
+              className="mt-3 px-4 py-2 bg-red text-white rounded-lg text-sm font-medium hover:bg-ink flex items-center gap-2"
+            >
+              <Upload size={14} /> Save {parseProposal.length} week{parseProposal.length > 1 ? 's' : ''} of data
+            </button>
           </div>
         )}
       </Card>
