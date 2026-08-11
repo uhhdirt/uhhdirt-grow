@@ -387,10 +387,11 @@ const defaultState = {
   growStartDate: '2026-06-10', // seeds started (solo cups)
   currentWeekId: 'clone',
   weekMode: 'auto', // 'auto' = compute week from start date; 'manual' = user pins currentWeekId
-  flipDate: null,   // set when you flip to 12/12; flower weeks count from here
+  flipDate: '2026-08-03',   // flipped to 12/12 on 8/3; flower weeks (F1…) count from here
   events: [
     { id: 'seed', date: '2026-06-10', label: 'Seeds started (solo cups)' },
     { id: 'transplant', date: '2026-06-29', label: 'Transplanted to City Pickers' },
+    { id: 'flip', date: '2026-08-03', label: 'Flipped to flower (12/12)' },
   ],
   completedTasks: {}, // { 'veg1:feed:0': true, ... }
   weeklyData: {}, // { 'veg1': { notes: '', photoUrl: '', envSummary: {}, observations: '' } }
@@ -430,10 +431,20 @@ function fmtDate(iso) {
   return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 // Calendar date range for a given SOP week index, based on start date.
-function weekDateRange(startISO, idx) {
+function weekDateRange(startISO, idx, flipISO, f1Idx) {
   if (!startISO) return '';
-  const start = new Date(startISO + 'T00:00:00');
-  const s = new Date(start.getTime() + idx * 7 * DAY);
+  // Flower weeks (idx >= f1) anchor their dates to the flip date; earlier
+  // weeks anchor to the seed date. Keeps displayed dates consistent with the
+  // flip-aware week calc.
+  let anchor, offset;
+  if (flipISO && f1Idx != null && idx >= f1Idx) {
+    anchor = new Date(flipISO + 'T00:00:00');
+    offset = idx - f1Idx;
+  } else {
+    anchor = new Date(startISO + 'T00:00:00');
+    offset = idx;
+  }
+  const s = new Date(anchor.getTime() + offset * 7 * DAY);
   const e = new Date(s.getTime() + 6 * DAY);
   const f = (d) => d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   return `${f(s)}–${f(e)}`;
@@ -799,7 +810,7 @@ function Dashboard({ state, setState, canEdit }) {
   // In auto mode, the displayed week is computed from the start date.
   // In manual mode, it follows the pinned currentWeekId.
   const weekMode = state.weekMode || 'auto';
-  const flipWeekIdx = SOP.weeks.findIndex(w => w.id === 'flip');
+  const flipWeekIdx = SOP.weeks.findIndex(w => w.id === 'f1'); // flip day anchors to F1 (grower counts flip day as week 1 of flower)
   const autoIdx = autoWeekIndex(state.growStartDate, SOP.weeks.length, new Date(), state.flipDate, flipWeekIdx);
   const pinnedIdx = SOP.weeks.findIndex(w => w.id === state.currentWeekId);
   const currentIdx = weekMode === 'auto'
@@ -807,7 +818,7 @@ function Dashboard({ state, setState, canEdit }) {
     : (pinnedIdx === -1 ? 0 : pinnedIdx);
   const currentWeek = SOP.weeks[currentIdx];
   const nextWeek = SOP.weeks[currentIdx + 1];
-  const dateRange = weekDateRange(state.growStartDate, currentIdx);
+  const dateRange = weekDateRange(state.growStartDate, currentIdx, state.flipDate, flipWeekIdx);
 
   const phaseColors = {
     clone: '#a3e635',
@@ -1117,7 +1128,7 @@ function Environment({ state, setState }) {
     readings.sort((a, b) => a.date - b.date);
 
     const avg = (arr, key) => arr.length ? arr.reduce((s, r) => s + r[key], 0) / arr.length : 0;
-    const flipWeekIdx = SOP.weeks.findIndex(w => w.id === 'flip');
+    const flipWeekIdx = SOP.weeks.findIndex(w => w.id === 'f1'); // flip day anchors to F1 (grower counts flip day as week 1 of flower)
 
     // Bucket every reading into the SOP week its DATE maps to (hybrid mapping).
     const buckets = {}; // weekIdx -> readings[]
@@ -1970,9 +1981,16 @@ export default function GrowTracker() {
             .select('state')
             .eq('id', GROW_ID)
             .maybeSingle();
-          // Merge with defaults so an empty/partial row can't break the UI
+          // Merge with defaults so an empty/partial row can't break the UI.
+          // Fields that are null/undefined in the saved state fall back to the
+          // default (so newly-added fields like growStartDate/events/flipDate
+          // aren't clobbered by older saves that predate them).
           if (active && data && data.state && Object.keys(data.state).length > 0) {
-            setState({ ...defaultState, ...data.state });
+            const merged = { ...defaultState };
+            for (const k of Object.keys(data.state)) {
+              if (data.state[k] !== null && data.state[k] !== undefined) merged[k] = data.state[k];
+            }
+            setState(merged);
           }
         } catch (err) {
           console.error('Load failed:', err);
@@ -1980,7 +1998,14 @@ export default function GrowTracker() {
       } else {
         try {
           const raw = localStorage.getItem(LS_KEY);
-          if (active && raw) setState(JSON.parse(raw));
+          if (active && raw) {
+            const saved = JSON.parse(raw);
+            const merged = { ...defaultState };
+            for (const k of Object.keys(saved)) {
+              if (saved[k] !== null && saved[k] !== undefined) merged[k] = saved[k];
+            }
+            setState(merged);
+          }
         } catch (err) { /* no local data yet */ }
       }
       if (active) setLoaded(true);
