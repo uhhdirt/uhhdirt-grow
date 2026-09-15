@@ -395,6 +395,7 @@ const defaultState = {
   ],
   completedTasks: {}, // { 'veg1:feed:0': true, ... }
   weeklyData: {}, // { 'veg1': { notes: '', photoUrl: '', envSummary: {}, observations: '' } }
+  photos: [], // [{ id, dataUrl, dateISO, weekId, dayNum, hasExif }]
   envReadings: [], // [{ week: 'veg1', tempOnAvg, tempOffAvg, rhOnAvg, rhOffAvg, vpdOnAvg, vpdOffAvg, sourceUploadDate }]
 };
 
@@ -1560,6 +1561,265 @@ function EventLog({ state, setState }) {
   );
 }
 
+// =============================================================
+// PHOTO GALLERY — the visual story of the grow, keyed to timeline
+// =============================================================
+// Reads each photo's EXIF capture date, computes its grow day + week,
+// compresses to a thumbnail, and displays grouped by week (newest first).
+function Gallery({ state, setState, canEdit }) {
+  const [busy, setBusy] = useState(false);
+  const [progress, setProgress] = useState('');
+  const [lightbox, setLightbox] = useState(null); // photo obj or null
+  const [filter, setFilter] = useState('all'); // all | veg | flower
+
+  const flipWeekIdx = SOP.weeks.findIndex(w => w.id === 'f1');
+
+  // Map a capture Date -> { weekId, weekLabel, dayNum } using the same
+  // flip-aware logic as the rest of the app.
+  const placePhoto = (dateObj) => {
+    const idx = dateToWeekIndex(dateObj, state.growStartDate, state.flipDate, flipWeekIdx, SOP.weeks.length);
+    const week = SOP.weeks[idx];
+    const startISO = state.growStartDate;
+    let dayNum = null;
+    if (startISO) {
+      const d = Math.floor((dateObj - new Date(startISO + 'T00:00:00')) / DAY) + 1;
+      dayNum = d > 0 ? d : null;
+    }
+    return { weekIdx: idx, weekId: week.id, weekLabel: week.label, dayNum };
+  };
+
+  // Compress an image file to a max-dimension thumbnail dataURL.
+  const compress = (file, maxDim = 1200, quality = 0.72) => new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      let { width, height } = img;
+      if (width > height && width > maxDim) { height = height * maxDim / width; width = maxDim; }
+      else if (height > maxDim) { width = width * maxDim / height; height = maxDim; }
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+      URL.revokeObjectURL(url);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('img decode failed')); };
+    img.src = url;
+  });
+
+  // Load exifr from CDN once, on demand.
+  const loadExifr = () => new Promise((resolve) => {
+    if (window.exifr) return resolve(window.exifr);
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/full.umd.js';
+    s.onload = () => resolve(window.exifr);
+    s.onerror = () => resolve(null); // graceful: no EXIF lib -> manual dates
+    document.head.appendChild(s);
+  });
+
+  const handleFiles = async (fileList) => {
+    const files = Array.from(fileList || []);
+    if (files.length === 0) return;
+    setBusy(true);
+    const exifr = await loadExifr();
+    const newPhotos = [];
+    for (let i = 0; i < files.length; i++) {
+      setProgress(`Processing ${i + 1} of ${files.length}…`);
+      const file = files[i];
+      let dateObj = null, hasExif = false;
+      try {
+        if (exifr) {
+          const meta = await exifr.parse(file, ['DateTimeOriginal', 'CreateDate']);
+          const d = meta && (meta.DateTimeOriginal || meta.CreateDate);
+          if (d) { dateObj = new Date(d); hasExif = true; }
+        }
+      } catch (e) { /* no exif on this one */ }
+      if (!dateObj && file.lastModified) dateObj = new Date(file.lastModified); // fallback
+      let dataUrl;
+      try { dataUrl = await compress(file); }
+      catch (e) { continue; } // skip undecodable
+      const placed = dateObj ? placePhoto(dateObj) : { weekId: null, weekLabel: null, dayNum: null };
+      newPhotos.push({
+        id: 'ph_' + Date.now() + '_' + i,
+        dataUrl,
+        dateISO: dateObj ? dateObj.toISOString() : null,
+        hasExif,
+        ...placed,
+      });
+    }
+    setState(prev => ({ ...prev, photos: [...(prev.photos || []), ...newPhotos] }));
+    setBusy(false);
+    setProgress('');
+  };
+
+  const removePhoto = (id) => {
+    setState(prev => ({ ...prev, photos: (prev.photos || []).filter(p => p.id !== id) }));
+    setLightbox(null);
+  };
+
+  // Manually set a photo's date (for no-EXIF stragglers).
+  const setPhotoDate = (id, iso) => {
+    const dateObj = new Date(iso + 'T12:00:00');
+    const placed = placePhoto(dateObj);
+    setState(prev => ({ ...prev, photos: (prev.photos || []).map(p =>
+      p.id === id ? { ...p, dateISO: dateObj.toISOString(), ...placed } : p) }));
+  };
+
+  // env summary for a week id
+  const envForWeek = (weekId) => (state.envReadings || []).filter(r => r.week === weekId).slice(-1)[0];
+  // is this photo's day a feed day? (Mondays, per Paul's cadence — day 1 = flip, feeds weekly)
+  const isFeedDay = (photo) => {
+    if (!photo.dateISO) return false;
+    return new Date(photo.dateISO).getDay() === 1; // Monday
+  };
+
+  // Build week -> photos map, filtered + sorted newest first.
+  const photos = (state.photos || []).filter(p => {
+    if (filter === 'all') return true;
+    const w = SOP.weeks.find(x => x.id === p.weekId);
+    if (!w) return filter === 'all';
+    return filter === 'veg' ? (w.phase === 'veg' || w.phase === 'clone') : w.phase === 'flower';
+  });
+  const undated = photos.filter(p => !p.weekId);
+  const dated = photos.filter(p => p.weekId);
+  // group by weekIdx
+  const groups = {};
+  for (const p of dated) (groups[p.weekIdx] = groups[p.weekIdx] || []).push(p);
+  const groupKeys = Object.keys(groups).map(Number).sort((a, b) => b - a); // newest week first
+  for (const k of groupKeys) groups[k].sort((a, b) => (a.dateISO < b.dateISO ? 1 : -1)); // newest photo first
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-semibold text-ink">Photo Gallery</h2>
+          <p className="text-xs text-faded">The visual story of the grow.</p>
+        </div>
+        {canEdit && (
+          <label className="px-3 py-2 bg-red text-white rounded-lg text-sm font-medium hover:bg-ink cursor-pointer flex items-center gap-1.5">
+            <Camera size={15} /> Add photos
+            <input type="file" accept="image/*" multiple className="hidden"
+              onChange={e => handleFiles(e.target.files)} />
+          </label>
+        )}
+      </div>
+
+      {busy && (
+        <div className="p-3 bg-panel border border-hair rounded-lg text-sm text-ink flex items-center gap-2">
+          <Upload size={15} className="animate-pulse" /> {progress || 'Processing…'}
+        </div>
+      )}
+
+      {/* filter pills */}
+      <div className="flex gap-2">
+        {['all', 'veg', 'flower'].map(f => (
+          <button key={f} onClick={() => setFilter(f)}
+            className={`px-3 py-1 rounded-full text-xs font-medium capitalize border ${filter === f ? 'bg-ink text-cream border-ink' : 'bg-cream text-faded border-hair'}`}>
+            {f}
+          </button>
+        ))}
+      </div>
+
+      {photos.length === 0 && !busy && (
+        <div className="p-8 text-center text-faded text-sm border border-dashed border-hair rounded-xl">
+          No photos yet. Tap "Add photos" and pick as many as you like — each lands on its grow day automatically.
+        </div>
+      )}
+
+      {/* undated photos needing a manual day */}
+      {undated.length > 0 && (
+        <div>
+          <div className="text-xs uppercase tracking-wide text-red font-semibold mb-2">Need a date</div>
+          <div className="grid grid-cols-2 gap-2">
+            {undated.map(p => (
+              <div key={p.id} className="bg-panel border border-hair rounded-xl overflow-hidden">
+                <img src={p.dataUrl} alt="" className="w-full h-24 object-cover" onClick={() => setLightbox(p)} />
+                <div className="p-2">
+                  {canEdit ? (
+                    <input type="date" className="w-full text-xs border border-hair rounded px-1 py-1"
+                      onChange={e => e.target.value && setPhotoDate(p.id, e.target.value)} />
+                  ) : <div className="text-[11px] text-faded">Undated</div>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* grouped by week, newest first */}
+      {groupKeys.map(k => {
+        const wk = SOP.weeks[k];
+        const env = envForWeek(wk.id);
+        const range = weekDateRange(state.growStartDate, k, state.flipDate, flipWeekIdx);
+        const list = groups[k];
+        const hero = list[0];
+        const rest = list.slice(1);
+        return (
+          <div key={k}>
+            <div className="flex items-center gap-2 my-3">
+              <div className="h-px bg-hair flex-1" />
+              <span className="text-xs font-semibold text-red whitespace-nowrap">{wk.label} · {range}</span>
+              <div className="h-px bg-hair flex-1" />
+            </div>
+
+            {/* hero photo (most recent in week) with full data */}
+            <div className="bg-panel border border-hair rounded-xl overflow-hidden mb-3">
+              <img src={hero.dataUrl} alt="" className="w-full object-cover" style={{ maxHeight: 220 }}
+                onClick={() => setLightbox(hero)} />
+              <div className="p-3">
+                <div className="flex items-baseline justify-between mb-2">
+                  <span className="font-semibold text-ink">{hero.dayNum ? `Day ${hero.dayNum} · ` : ''}{wk.label}</span>
+                  <span className="text-xs text-faded">{hero.dateISO ? new Date(hero.dateISO).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : ''}</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {env && <span className="text-[11px] px-2 py-1 rounded bg-orange-50 text-orange-800">🌡 {env.tempOnAvg?.toFixed(1)}°F</span>}
+                  {env && <span className="text-[11px] px-2 py-1 rounded bg-blue-50 text-blue-800">💧 {env.rhOnAvg?.toFixed(0)}% RH</span>}
+                  {env && <span className="text-[11px] px-2 py-1 rounded bg-purple-50 text-purple-800">VPD {env.vpdOnAvg?.toFixed(2)}</span>}
+                  {isFeedDay(hero) && <span className="text-[11px] px-2 py-1 rounded bg-green-50 text-green-800">🍽 Feed day</span>}
+                  {!env && <span className="text-[11px] px-2 py-1 rounded bg-panel text-faded border border-hair">No env data this week</span>}
+                </div>
+              </div>
+            </div>
+
+            {/* rest of week as thumbnails */}
+            {rest.length > 0 && (
+              <div className="grid grid-cols-2 gap-2 mb-2">
+                {rest.map(p => (
+                  <div key={p.id} className="bg-panel border border-hair rounded-xl overflow-hidden">
+                    <img src={p.dataUrl} alt="" className="w-full h-24 object-cover" onClick={() => setLightbox(p)} />
+                    <div className="px-2 py-1.5">
+                      <div className="text-xs font-semibold text-ink">{p.dayNum ? `Day ${p.dayNum} · ` : ''}{wk.label}</div>
+                      <div className="text-[11px] text-faded">{p.dateISO ? new Date(p.dateISO).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : ''}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })}
+
+      {/* lightbox */}
+      {lightbox && (
+        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4" onClick={() => setLightbox(null)}>
+          <div className="max-w-lg w-full" onClick={e => e.stopPropagation()}>
+            <img src={lightbox.dataUrl} alt="" className="w-full rounded-lg" />
+            <div className="flex items-center justify-between mt-3 text-cream">
+              <div>
+                <div className="font-semibold">{lightbox.dayNum ? `Day ${lightbox.dayNum} · ` : ''}{lightbox.weekLabel || 'Undated'}</div>
+                <div className="text-xs opacity-70">{lightbox.dateISO ? new Date(lightbox.dateISO).toLocaleString() : ''}</div>
+              </div>
+              <div className="flex gap-2">
+                {canEdit && <button onClick={() => removePhoto(lightbox.id)} className="px-3 py-1.5 border border-cream/40 rounded text-sm hover:bg-white/10">Delete</button>}
+                <button onClick={() => setLightbox(null)} className="px-3 py-1.5 border border-cream/40 rounded text-sm hover:bg-white/10"><X size={16} /></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Settings({ state, setState }) {
   const [showResetConfirm, setShowResetConfirm] = useState(false);
 
@@ -2067,6 +2327,7 @@ export default function GrowTracker() {
     { id: 'dashboard', label: 'Today' },
     { id: 'schedule', label: 'Schedule' },
     { id: 'environment', label: 'Env' },
+    { id: 'gallery', label: 'Photos' },
     { id: 'journal', label: 'Journal' },
     { id: 'history', label: 'History' },
     { id: 'settings', label: 'Set' },
@@ -2129,6 +2390,7 @@ export default function GrowTracker() {
           {view === 'dashboard' && <Dashboard state={state} setState={updateState} canEdit={canEdit} />}
           {view === 'schedule' && <Schedule state={state} setState={updateState} canEdit={canEdit} />}
           {view === 'environment' && <Environment state={state} setState={updateState} canEdit={canEdit} />}
+          {view === 'gallery' && <Gallery state={state} setState={updateState} canEdit={canEdit} />}
           {view === 'journal' && <Journal state={state} setState={updateState} canEdit={canEdit} />}
           {view === 'history' && <History />}
           {view === 'settings' && <Settings state={state} setState={updateState} canEdit={canEdit} />}
@@ -2137,13 +2399,13 @@ export default function GrowTracker() {
 
       {/* Bottom nav */}
       <div className="fixed bottom-0 left-0 right-0 bg-void border-t-4 border-void">
-        <div className="max-w-3xl mx-auto px-1">
+        <div className="max-w-3xl mx-auto px-0.5">
           <div className="flex justify-between">
             {tabs.map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setView(tab.id)}
-                className={`flex-1 flex flex-col items-center py-3 font-cond font-bold uppercase tracking-wider text-[11px] transition-colors ${view === tab.id ? 'text-yellow' : 'text-faded hover:text-cream'}`}
+                className={`flex-1 flex flex-col items-center py-3 font-cond font-bold uppercase tracking-wide text-[10px] transition-colors ${view === tab.id ? 'text-yellow' : 'text-faded hover:text-cream'}`}
               >
                 {view === tab.id && <span className="block w-4 h-[3px] bg-mag mb-1.5" />}
                 {view !== tab.id && <span className="block w-4 h-[3px] bg-transparent mb-1.5" />}
