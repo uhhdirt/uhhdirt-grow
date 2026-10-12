@@ -213,56 +213,52 @@ const SOP = {
       tasks: {
         feed: ['No feeding — last water was 48hr ago'],
         action: [
-          '✂️ Strip ALL fan leaves on BOTH plants (keep sugar leaves)',
-          '🪓 PLANT A → Cannatrol — Option A1 (slow cold): 60°F dry bulb / 45°F dew point / 21-day slope dry',
-          '🪓 PLANT A → Cannatrol — Option A2 (balanced fallback): 68°F / 57°F dew point / 10 days + 68°F / 54°F / 4 day cure',
-          '🪓 PLANT B → Tent hang-dry: 70-72°F / 40-45% RH (fast-dry protocol)',
-          'Plant B: hang whole plant intact, do NOT wet trim',
+          '✂️ Strip ALL fan leaves (keep sugar leaves) — wet trim',
+          '🔪 Buck down to bud size — big colas can go in whole IF the drawer still closes without crushing them',
+          '🪓 Load Cannatrol — FACTORY DEFAULT: 68°F dry bulb / 54°F dew point',
+          '📌 Single method this run — NO A/B, no hang-dry, no modified settings. Factory Cannatrol only, as a clean baseline.',
+          'Single layer on the trays — do NOT overpack; air must move around every bud',
           '🧤 GLOVES FROM NOW ON — never touch buds bare-handed',
-          '⚠️ CONFIRM with Cannatrol customer service which A profile is safe to run'
         ],
-        environment: ['Tent cleaned + blacked out for Plant B', 'Portable AC + dehumidifier holding 70-72°F / 40-45%'],
-        watchFor: ['Track plants separately', 'Both protocols deliberately compete head-to-head'],
+        environment: ['Cannatrol factory default: 68°F / 54°F dew point', 'Empty the drip tray as it fills the first 1-2 days'],
+        watchFor: ['First 12-24h: chamber RH reads high while buds off-gas — normal ONLY if it trends down', 'Overpacked + flat/rising RH = pull weight out, hang the overflow'],
       },
-      whyMatters: 'A/B test of competing philosophies: slow cold cure (chlorophyll breakdown) vs fast warm dry (water activity + terpene preservation). Both protocols address what hurt Sour Irene. We need to know which one your space + your strains respond to better.',
+      whyMatters: 'Plan changed: no A/B test this run. Ran Cannatrol factory default (68°F / 54°F dew) on the whole harvest to get a clean baseline before experimenting with modified settings or a hang-dry comparison on a future drop.',
     },
     {
-      id: 'dry1', label: 'Dry 1', phase: 'dry', stage: 'Days 1-7 — both plants',
-      tempOn: '60-72', rhOn: '40-55', vpdOn: '—', tempOff: '60-72', rhOff: '40-55', vpdOff: '—',
+      id: 'dry1', label: 'Dry 1', phase: 'dry', stage: 'Days 1-7 — factory-default Cannatrol',
+      tempOn: '68', rhOn: '54 dew', vpdOn: '—', tempOff: '68', rhOff: '54 dew', vpdOff: '—',
       light: 'Off', lightHeight: '—',
       tasks: {
         feed: [],
         action: [
-          'Plant A (Cannatrol): monitor setpoints holding correctly',
-          'Plant B (Tent): daily check on temp + RH',
-          'Plant B: stem snap test from day 6 onward'
+          'Monitor Cannatrol setpoints holding (68°F dry bulb / 54°F dew point)',
+          'Empty the drip tray daily the first couple days',
+          'Daily: re-wet sponge + eyes-and-nose check for rot',
+          '⚠️ THIS RUN: original TEC cooling unit underperformed — chamber stuck ~80% RH, would not trend down',
         ],
-        environment: [
-          'Plant A chamber: per chosen profile (60°F slow OR 68°F balanced)',
-          'Plant B tent: 70-72°F / 40-45% RH steady'
-        ],
-        watchFor: ['Plant B day 7-8: small stems snap = ready for rest jar phase', 'Plant A still in middle of cycle regardless of which profile'],
+        environment: ['Cannatrol factory default: 68°F / 54°F dew point'],
+        watchFor: ['Chamber RH should step DOWN within 12-24h — flat/high = hardware fault or overload', 'Dense colas dry slowest — watch them for damp pockets'],
       },
-      whyMatters: 'Plant B is fast (warm dry): aim to be at stem-snap by day 7-8. Plant A is slow (Cannatrol): just running its program — your job is to verify setpoints are holding.',
+      whyMatters: 'Factory-default baseline dry (68°F / 54°F dew). On Pomelo Punch this is where the original TEC unit showed it couldn\'t pull the chamber down — RH sat at 80% instead of gliding down, which is the tell that it was the hardware, not the load.',
     },
     {
-      id: 'dry2', label: 'Dry 2', phase: 'dry', stage: 'Days 8-21 — divergent paths',
-      tempOn: '60-72', rhOn: '40-55', vpdOn: '—', tempOff: '60-72', rhOff: '40-55', vpdOff: '—',
+      id: 'dry2', label: 'Dry 2', phase: 'dry', stage: 'Days 8+ — interruption + recovery',
+      tempOn: '68-72', rhOn: '45-54 dew', vpdOn: '—', tempOff: '68-72', rhOff: '45-54 dew', vpdOff: '—',
       light: 'Off', lightHeight: '—',
       tasks: {
         feed: [],
         action: [
-          'Plant B day 8-10: stem snap → move to REST JAR PHASE (mason jars or Tupperware, loose lid, 2-3 days same RH as dry room)',
-          'Plant B day 10-11: trim in same room (matching RH)',
-          'Plant B before final jar: water activity check (sample test jar, 12-24hr, target 55-62% reading)',
-          'Plant A (Option A1): continues slope dry through day 21',
-          'Plant A (Option A2): cure phase starts day 11, ends day 14',
-          'Plant A at end: JAR SEALED EXTERNALLY in mason + Boveda 62% — do NOT continue lid-off in chamber'
+          '⚠️ INTERRUPTION (this run): ~2 days open-air at 72°F / 45% RH with a fan while the replacement TEC shipped',
+          'Replaced the TEC cooling unit (self-installed)',
+          'Restarted Cannatrol factory default: 68°F dry bulb / 54°F dew point',
+          'Jar test a few nugs 12-24hr → target 60-62% reading',
+          'At target: switch to cure/hold, leave buds OPEN on the trays — do NOT jar inside the chamber',
         ],
-        environment: ['Hold Plant B tent steady until trim', 'Plant A unit continues its program'],
-        watchFor: ['Plant B: rehydration if moved to humid space (don\'t)', 'Plant A: setpoints not drifting'],
+        environment: ['During outage: open-air 72°F / 45% RH, fan indirect', 'After TEC swap: back to factory default 68°F / 54°F dew point'],
+        watchFor: ['Crispy exteriors + 60-62% jar test = uneven moisture; the cure equalizes it', 'Over-rotating/handling knocks trichomes — ease off once at target'],
       },
-      whyMatters: 'Plant B finishes around day 10-11. Plant A finishes day 14 (balanced) or day 21 (slow cold). The key fix vs last grow: JAR SEALED EXTERNALLY when each plant\'s cycle ends. No more lid-off in chamber.',
+      whyMatters: 'The real story of this dry: the TEC failure forced a ~2-day open-air gap (72°F / 45% RH, fan), then a unit swap and a factory-default restart (68°F / 54°F dew). Despite the interruption the buds still landed at ~60-63% water activity and the aroma came back strong.',
     },
     {
       id: 'cure1', label: 'Cure W1', phase: 'cure', stage: 'Initial sealed cure',
@@ -306,11 +302,11 @@ const SOP = {
       light: 'Dark', lightHeight: '—',
       tasks: {
         feed: [],
-        action: ['Burp weekly', '📝 Full smoke report — flavor, ash, burn, resin', 'Compare Plant A vs Plant B'],
+        action: ['Burp weekly', '📝 Full smoke report — flavor, ash, burn, resin', 'Note how the factory-default dry (+ the interruption) shows up in the final product'],
         environment: ['Long-term sealed storage (wine fridge ideal)'],
-        watchFor: ['"Loud" peak — this is when Pomelo Punch should sing', 'Document everything for next run'],
+        watchFor: ['"Loud" peak — this is when Pomelo Punch should sing', 'Document everything — this factory-default run is the baseline for next drop\'s experiments'],
       },
-      whyMatters: 'Weeks 6-10 of cure is peak for terpene-forward strains. Final A/B verdict happens here.',
+      whyMatters: 'Weeks 6-10 of cure is peak for terpene-forward strains. This run is the factory-default baseline — the smoke report here is what a future modified-settings or hang-dry comparison gets measured against.',
     },
   ],
 };
@@ -325,6 +321,29 @@ const STORAGE_KEY = 'grow-tracker:pomelo-punch-v1';
 // HISTORICAL GROWS — for comparison & learning
 // ============================================
 const HISTORICAL_GROWS = [
+  {
+    id: 'pomelo-punch-fall-2026',
+    strain: 'Pomelo Punch',
+    inProgress: true, // WIP — weigh after trim, ~a few weeks into cure
+    chopDate: '2026-10-05', // confirm exact chop day
+    yieldGrams: null, // TBD — weigh when dry weight is stable (post-trim, mid-cure)
+    yieldOz: null,
+    aBudsGrams: null, // optional tops/larf split at weigh
+    smallMedGrams: null,
+    smokeReport: null, // TBD — fill in after cure
+    grow: {
+      lightSchedule: 'TBD',
+      maxLightPct: 'TBD',
+      coldFinish: 'TBD',
+      dryMethod: 'Cannatrol FACTORY DEFAULT (68°F dry bulb / 54°F dew point). No A/B test this run — single-method baseline.',
+      cureMethod: 'Sealed Cannatrol cure/hold, buds open on trays — in progress',
+      majorIssues: [
+        'TEC cooling unit failed early in the dry — chamber stuck ~80% RH, would not trend down',
+        'Bridged ~2 days open-air at 72°F / 45% RH with a fan while the replacement TEC shipped',
+        'Swapped the TEC (self-installed), restarted factory default 68°F / 54°F dew',
+      ],
+    },
+  },
   {
     id: 'sour-irene-winter-2026',
     strain: 'Sour Irene',
@@ -395,7 +414,7 @@ const defaultState = {
   ],
   completedTasks: {}, // { 'veg1:feed:0': true, ... }
   weeklyData: {}, // { 'veg1': { notes: '', photoUrl: '', envSummary: {}, observations: '' } }
-  photos: [], // [{ id, dataUrl, dateISO, weekId, dayNum, hasExif }]
+  photos: [], // [{ id, dataUrl, dateISO, weekId, weekLabel, phaseLabel, dayInPhase, hasExif }]
   envReadings: [], // [{ week: 'veg1', tempOnAvg, tempOffAvg, rhOnAvg, rhOffAvg, vpdOnAvg, vpdOffAvg, sourceUploadDate }]
 };
 
@@ -470,6 +489,52 @@ function dateToWeekIndex(dateObj, startISO, flipISO, flipWeekIdx, weeksLen) {
   const raw = Math.floor(d / 7);
   const cap = flipWeekIdx != null ? Math.max(0, flipWeekIdx - 1) : weeksLen - 1;
   return Math.min(raw, cap);
+}
+
+// One-time migration: older photos were stored with a running-total `dayNum`
+// (counted from grow start). Recompute each photo's phase-relative day
+// (`dayInPhase` + `phaseLabel`) from its stored date. Idempotent — a photo
+// that already has dayInPhase is left alone; a photo with no date stays
+// undated. Returns a new photos array (or the same ref if nothing changed).
+function migratePhotos(state) {
+  const photos = state.photos;
+  if (!Array.isArray(photos) || photos.length === 0) return photos;
+  const needs = photos.some(p => p && p.dayInPhase == null && p.dateISO);
+  if (!needs) return photos;
+
+  const PHASE_LABEL = { clone: 'veg', veg: 'veg', flower: 'flower', harvest: 'harvest', dry: 'dry', cure: 'cure' };
+  const flipWeekIdx = SOP.weeks.findIndex(w => w.id === 'f1');
+  const startISO = state.growStartDate;
+  const flipISO = state.flipDate;
+
+  const phaseStartISO = (phase) => {
+    if (phase === 'veg' || phase === 'clone') return startISO;
+    if (phase === 'flower') return flipISO || startISO;
+    if (flipISO) {
+      const firstIdxOfPhase = SOP.weeks.findIndex(w => w.phase === phase);
+      if (firstIdxOfPhase >= 0 && flipWeekIdx >= 0) {
+        const flip = new Date(flipISO + 'T00:00:00');
+        return new Date(flip.getTime() + (firstIdxOfPhase - flipWeekIdx) * 7 * DAY).toISOString().slice(0, 10);
+      }
+    }
+    return startISO;
+  };
+
+  return photos.map(p => {
+    if (!p || p.dayInPhase != null || !p.dateISO) return p; // already migrated or undated
+    const dateObj = new Date(p.dateISO);
+    const idx = dateToWeekIndex(dateObj, startISO, flipISO, flipWeekIdx, SOP.weeks.length);
+    const week = SOP.weeks[idx];
+    const phaseLabel = PHASE_LABEL[week.phase] || week.phase;
+    const anchorISO = phaseStartISO(week.phase);
+    let dayInPhase = null;
+    if (anchorISO) {
+      const d = Math.floor((dateObj - new Date(anchorISO + 'T00:00:00')) / DAY) + 1;
+      dayInPhase = d > 0 ? d : null;
+    }
+    const { dayNum, ...rest } = p; // drop the stale running-total field
+    return { ...rest, weekIdx: idx, weekId: week.id, weekLabel: week.label, phaseLabel, dayInPhase };
+  });
 }
 
 function StatusPill({ status, children }) {
@@ -1574,18 +1639,41 @@ function Gallery({ state, setState, canEdit }) {
 
   const flipWeekIdx = SOP.weeks.findIndex(w => w.id === 'f1');
 
-  // Map a capture Date -> { weekId, weekLabel, dayNum } using the same
-  // flip-aware logic as the rest of the app.
+  // Readable phase labels
+  const PHASE_LABEL = { clone: 'veg', veg: 'veg', flower: 'flower', harvest: 'harvest', dry: 'dry', cure: 'cure' };
+
+  // The calendar date each phase begins, for phase-relative day counting.
+  // veg counts from grow start; flower counts from the flip date; later
+  // phases count from where the flower schedule hands off.
+  const phaseStartISO = (phase) => {
+    const startISO = state.growStartDate;
+    const flipISO = state.flipDate;
+    if ((phase === 'veg' || phase === 'clone')) return startISO;
+    if (phase === 'flower') return flipISO || startISO;
+    // dry/cure/harvest: anchor to flip + (weeks of flower before that phase)
+    if (flipISO) {
+      const firstIdxOfPhase = SOP.weeks.findIndex(w => w.phase === phase);
+      if (firstIdxOfPhase >= 0 && flipWeekIdx >= 0) {
+        const weeksIntoFlower = firstIdxOfPhase - flipWeekIdx;
+        const flip = new Date(flipISO + 'T00:00:00');
+        return new Date(flip.getTime() + weeksIntoFlower * 7 * DAY).toISOString().slice(0, 10);
+      }
+    }
+    return startISO;
+  };
+
+  // Map a capture Date -> { weekId, weekLabel, phaseLabel, dayInPhase }.
   const placePhoto = (dateObj) => {
     const idx = dateToWeekIndex(dateObj, state.growStartDate, state.flipDate, flipWeekIdx, SOP.weeks.length);
     const week = SOP.weeks[idx];
-    const startISO = state.growStartDate;
-    let dayNum = null;
-    if (startISO) {
-      const d = Math.floor((dateObj - new Date(startISO + 'T00:00:00')) / DAY) + 1;
-      dayNum = d > 0 ? d : null;
+    const phaseLabel = PHASE_LABEL[week.phase] || week.phase;
+    const anchorISO = phaseStartISO(week.phase);
+    let dayInPhase = null;
+    if (anchorISO) {
+      const d = Math.floor((dateObj - new Date(anchorISO + 'T00:00:00')) / DAY) + 1;
+      dayInPhase = d > 0 ? d : null;
     }
-    return { weekIdx: idx, weekId: week.id, weekLabel: week.label, dayNum };
+    return { weekIdx: idx, weekId: week.id, weekLabel: week.label, phaseLabel, dayInPhase };
   };
 
   // Compress an image file to a max-dimension thumbnail dataURL.
@@ -1637,7 +1725,7 @@ function Gallery({ state, setState, canEdit }) {
       let dataUrl;
       try { dataUrl = await compress(file); }
       catch (e) { continue; } // skip undecodable
-      const placed = dateObj ? placePhoto(dateObj) : { weekId: null, weekLabel: null, dayNum: null };
+      const placed = dateObj ? placePhoto(dateObj) : { weekId: null, weekLabel: null, phaseLabel: null, dayInPhase: null };
       newPhotos.push({
         id: 'ph_' + Date.now() + '_' + i,
         dataUrl,
@@ -1767,7 +1855,7 @@ function Gallery({ state, setState, canEdit }) {
                 onClick={() => setLightbox(hero)} />
               <div className="p-3">
                 <div className="flex items-baseline justify-between mb-2">
-                  <span className="font-semibold text-ink">{hero.dayNum ? `Day ${hero.dayNum} · ` : ''}{wk.label}</span>
+                  <span className="font-semibold text-ink">{hero.dayInPhase ? `Day ${hero.dayInPhase} of ${hero.phaseLabel} · ` : ''}{wk.label}</span>
                   <span className="text-xs text-faded">{hero.dateISO ? new Date(hero.dateISO).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : ''}</span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
@@ -1787,7 +1875,7 @@ function Gallery({ state, setState, canEdit }) {
                   <div key={p.id} className="bg-panel border border-hair rounded-xl overflow-hidden">
                     <img src={p.dataUrl} alt="" className="w-full h-24 object-cover" onClick={() => setLightbox(p)} />
                     <div className="px-2 py-1.5">
-                      <div className="text-xs font-semibold text-ink">{p.dayNum ? `Day ${p.dayNum} · ` : ''}{wk.label}</div>
+                      <div className="text-xs font-semibold text-ink">{p.dayInPhase ? `Day ${p.dayInPhase} of ${p.phaseLabel} · ` : ''}{wk.label}</div>
                       <div className="text-[11px] text-faded">{p.dateISO ? new Date(p.dateISO).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : ''}</div>
                     </div>
                   </div>
@@ -1805,7 +1893,7 @@ function Gallery({ state, setState, canEdit }) {
             <img src={lightbox.dataUrl} alt="" className="w-full rounded-lg" />
             <div className="flex items-center justify-between mt-3 text-cream">
               <div>
-                <div className="font-semibold">{lightbox.dayNum ? `Day ${lightbox.dayNum} · ` : ''}{lightbox.weekLabel || 'Undated'}</div>
+                <div className="font-semibold">{lightbox.dayInPhase ? `Day ${lightbox.dayInPhase} of ${lightbox.phaseLabel} · ` : ''}{lightbox.weekLabel || 'Undated'}</div>
                 <div className="text-xs opacity-70">{lightbox.dateISO ? new Date(lightbox.dateISO).toLocaleString() : ''}</div>
               </div>
               <div className="flex gap-2">
@@ -1957,9 +2045,9 @@ function History() {
         <div className="grid grid-cols-2 gap-3">
           {HISTORICAL_GROWS.map(g => (
             <div key={g.id} className="p-3 bg-paper rounded-lg border border-hair">
-              <div className="text-xs uppercase tracking-wide text-faded mb-1">{g.strain}</div>
-              <div className="text-2xl font-semibold text-ink">{g.yieldGrams}g</div>
-              <div className="text-xs text-faded">{g.yieldOz} oz · chopped {new Date(g.chopDate).toLocaleDateString()}</div>
+              <div className="text-xs uppercase tracking-wide text-faded mb-1">{g.strain}{g.inProgress && <span className="ml-1 normal-case text-[10px] text-red">· WIP</span>}</div>
+              <div className="text-2xl font-semibold text-ink">{g.yieldGrams != null ? `${g.yieldGrams}g` : 'TBD'}</div>
+              <div className="text-xs text-faded">{g.yieldGrams != null ? `${g.yieldOz} oz · ` : 'curing · '}chopped {new Date(g.chopDate).toLocaleDateString()}</div>
             </div>
           ))}
         </div>
@@ -2063,12 +2151,12 @@ function History() {
         <Card key={g.id}>
           <div className="flex justify-between items-start mb-3">
             <div>
-              <h3 className="font-semibold text-ink">{g.strain}</h3>
+              <h3 className="font-semibold text-ink">{g.strain}{g.inProgress && <span className="ml-2 text-[10px] uppercase tracking-wide bg-[#f7f0d8] border border-[#e3d59a] text-ink rounded px-1.5 py-0.5 align-middle">Work in progress</span>}</h3>
               <p className="text-xs text-faded">Chopped {new Date(g.chopDate).toLocaleDateString()}</p>
             </div>
             <div className="text-right">
-              <div className="text-lg font-semibold text-ink">{g.yieldGrams}g</div>
-              <div className="text-xs text-faded">{g.yieldOz} oz</div>
+              <div className="text-lg font-semibold text-ink">{g.yieldGrams != null ? `${g.yieldGrams}g` : 'TBD'}</div>
+              <div className="text-xs text-faded">{g.yieldGrams != null ? `${g.yieldOz} oz` : 'weigh after trim'}</div>
             </div>
           </div>
 
@@ -2081,16 +2169,24 @@ function History() {
 
           <div className="mb-4">
             <div className="text-xs font-semibold uppercase tracking-wide text-faded mb-1.5">Smoke Report</div>
-            <div className="space-y-1 text-sm">
-              <div><span className="text-faded">Flavor:</span> {g.smokeReport.flavor}</div>
-              <div><span className="text-faded">Smoothness:</span> {g.smokeReport.smoothness}</div>
-              <div><span className="text-faded">Ash:</span> {g.smokeReport.ash}</div>
-              <div><span className="text-faded">Resin:</span> {g.smokeReport.resin}</div>
-              <div><span className="text-faded">Potency:</span> {g.smokeReport.potency}</div>
-            </div>
-            <div className={`mt-2 p-2 rounded text-xs ${g.smokeReport.verdict.startsWith('✓') ? 'bg-panel text-ink border border-hair' : 'bg-[#fbeae9] text-ink border border-red'}`}>
-              {g.smokeReport.verdict}
-            </div>
+            {g.smokeReport ? (
+              <>
+                <div className="space-y-1 text-sm">
+                  <div><span className="text-faded">Flavor:</span> {g.smokeReport.flavor}</div>
+                  <div><span className="text-faded">Smoothness:</span> {g.smokeReport.smoothness}</div>
+                  <div><span className="text-faded">Ash:</span> {g.smokeReport.ash}</div>
+                  <div><span className="text-faded">Resin:</span> {g.smokeReport.resin}</div>
+                  <div><span className="text-faded">Potency:</span> {g.smokeReport.potency}</div>
+                </div>
+                {g.smokeReport.verdict && (
+                  <div className={`mt-2 p-2 rounded text-xs ${g.smokeReport.verdict.startsWith('✓') ? 'bg-panel text-ink border border-hair' : 'bg-[#fbeae9] text-ink border border-red'}`}>
+                    {g.smokeReport.verdict}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="text-sm text-faded italic">Pending — fill in after cure (a few weeks out).</div>
+            )}
           </div>
 
           <div className="mb-3">
@@ -2250,6 +2346,7 @@ export default function GrowTracker() {
             for (const k of Object.keys(data.state)) {
               if (data.state[k] !== null && data.state[k] !== undefined) merged[k] = data.state[k];
             }
+            merged.photos = migratePhotos(merged);
             setState(merged);
           }
         } catch (err) {
@@ -2264,6 +2361,7 @@ export default function GrowTracker() {
             for (const k of Object.keys(saved)) {
               if (saved[k] !== null && saved[k] !== undefined) merged[k] = saved[k];
             }
+            merged.photos = migratePhotos(merged);
             setState(merged);
           }
         } catch (err) { /* no local data yet */ }
