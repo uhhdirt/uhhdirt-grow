@@ -324,23 +324,25 @@ const HISTORICAL_GROWS = [
   {
     id: 'pomelo-punch-fall-2026',
     strain: 'Pomelo Punch',
-    inProgress: true, // WIP — weigh after trim, ~a few weeks into cure
+    inProgress: true, // WIP — yield logged; smoke report pending full cure
     chopDate: '2026-10-05', // confirm exact chop day
-    yieldGrams: null, // TBD — weigh when dry weight is stable (post-trim, mid-cure)
-    yieldOz: null,
-    aBudsGrams: null, // optional tops/larf split at weigh
-    smallMedGrams: null,
-    smokeReport: null, // TBD — fill in after cure
+    yieldGrams: 356.8, // weighed 10/18 (~day 13), lightly trimmed
+    yieldOz: (356.8 / 28.35).toFixed(2),
+    aBudsGrams: 317.8, // bud shelves 1,2,3,5,6 (tops + mids combined)
+    smallMedGrams: 39, // larf shelf (shelf 4)
+    yieldNote: 'Weighed 10/18 at ~2 weeks cure. Lightly trimmed — some large stems left on for presentation, so the number is slightly inflated; a bit more cleanup at distro will shave a few grams. "A/bud" figure (317.8g) is shelves 1/2/3/5/6 combined (tops + mids); larf shelf = 39g. ~178g/plant — 2.4x Sour Irene.',
+    smokeReport: null, // TBD — fill in after full cure
     grow: {
       lightSchedule: 'TBD',
       maxLightPct: 'TBD',
       coldFinish: 'TBD',
       dryMethod: 'Cannatrol FACTORY DEFAULT (68°F dry bulb / 54°F dew point). No A/B test this run — single-method baseline.',
-      cureMethod: 'Sealed Cannatrol cure/hold, buds open on trays — in progress',
+      cureMethod: 'Cannatrol 21-day cure cycle, started ~Oct 15-16 (completes ~Nov 5-6). Buds open on trays, holding ~61-62% RH (bumped to 63% to rehydrate the brittle buds). Jar at end of cycle for distro/storage. [Cure start reconstructed from "18-19 days left" on Oct 18 — confirm against the Cannatrol counter.] In progress.',
       majorIssues: [
         'TEC cooling unit failed early in the dry — chamber stuck ~80% RH, would not trend down',
         'Bridged ~2 days open-air at 72°F / 45% RH with a fan while the replacement TEC shipped',
         'Swapped the TEC (self-installed), restarted factory default 68°F / 54°F dew',
+        'Buds dried brittle/crispy exteriors (fast open-air dry during the TEC outage) — very resinous but crunchy, muted color; rehydrating by holding them open in the Cannatrol at 63% RH through the cure cycle to soften for bag appeal',
       ],
     },
   },
@@ -2162,10 +2164,12 @@ function History() {
 
           {(g.aBudsGrams || g.smallMedGrams) && (
             <div className="mb-3 grid grid-cols-2 gap-2 text-xs">
-              {g.aBudsGrams && <div className="bg-panel border border-hair rounded p-2"><div className="text-faded">Tops / "A" buds</div><div className="font-semibold">{g.aBudsGrams}g</div></div>}
-              {g.smallMedGrams && <div className="bg-paper border border-hair rounded p-2"><div className="text-faded">Small / mediums</div><div className="font-semibold">{g.smallMedGrams}g</div></div>}
+              {g.aBudsGrams && <div className="bg-panel border border-hair rounded p-2"><div className="text-faded">Bud shelves (tops + mids)</div><div className="font-semibold">{g.aBudsGrams}g</div></div>}
+              {g.smallMedGrams && <div className="bg-paper border border-hair rounded p-2"><div className="text-faded">Larf / small</div><div className="font-semibold">{g.smallMedGrams}g</div></div>}
             </div>
           )}
+
+          {g.yieldNote && <p className="text-xs text-faded italic mb-3 leading-relaxed">{g.yieldNote}</p>}
 
           <div className="mb-4">
             <div className="text-xs font-semibold uppercase tracking-wide text-faded mb-1.5">Smoke Report</div>
